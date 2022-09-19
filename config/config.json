@@ -2,9 +2,9 @@
   "development": {
     "username": "postgres",
     "password": "ButterCaramel",
-    "database": "db_final_project",
+    "database": "db_wgs_final_Project",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgresql"
   },
   "test": {
     "username": "root",

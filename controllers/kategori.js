@@ -3,10 +3,10 @@ const {kategori} = require('../models');
 // Menambahkan kategori
 exports.add_kat = async (req, res, next) => {
     try {
-        const nama = "topi"
+        const nama_kat = body.params.nama
         //membuat data baru di db menggunakan method create
         const kat = await kategori.create({
-            nama
+            nama_kat
             });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
         if (kat) {

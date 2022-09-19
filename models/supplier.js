@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   supplier.init({
-    nama: DataTypes.STRING,
+    nama_supp: DataTypes.STRING,
     alamat: DataTypes.STRING,
-    noHp: DataTypes.NUMERIC
+    noHp: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'supplier',

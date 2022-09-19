@@ -3,24 +3,26 @@ const {user} = require('../models')
 // List semua data user
 exports.list_user = async (req, res, next) => {
     try {
-        //mengambil semua data
-        const users = await user.findAll({});
-        
+        const users = await user.findAll();
+            console.log(users);
+        // //mengambil semua data
+        // const users = await user.findAll({});
+        // console.log(users);
         // Pengkondisian data ada atau tidak
-        if (users.length !== 0) {
-            res.json({
-                'status': 'OK',
-                'messages': '',
-                'data': users
-            });
-        } else {
-            res.json({
-                'status': 'EMPTY',
-                'messages': 'Data is empty',
-                'data': {} 
-            });
-        }
+        // if (users.length !== 0) {
+        //     res.json({
+        //         'status': 'OK',
+        //         'messages': '',
+        //         'data': users
+        //     });
+        // } else {
+        //     res.json({
+        //         'status': 'EMPTY',
+        //         'messages': 'Data is empty',S
+        //         'data': {} S
+        // }
     } catch (err) {
+        console.log(err)
             res.status(500).json({
                 'status': 'ERROR',
                 'messages': 'Internal Server Error'
@@ -55,34 +57,6 @@ exports.detail_user = async (req, res, next) => {
             'status': 'ERROR',
             'messages': 'Internal Server Error'
         })
-    }
-}
-
-// Untuk menambahkan data user/register
-exports.add_user = async (req, res, next) => {
-    try {
-        const username = "Adrian";
-        const password = '123'
-        const status = 'Karyawan'
-        //membuat data baru di db menggunakan method create
-        const post = await user.create({
-            username,
-            password,
-            status
-            });
-        //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
-        if (post) {
-            res.status(201).json({
-            'status': 'OK',
-            'messages': 'Post berhasil ditambahkan',
-            'data': post
-            });
-        }
-    } catch(err) {
-        res.status(400).json({
-            'status': 'ERROR',
-            'messages': err.message
-        });
     }
 }
 

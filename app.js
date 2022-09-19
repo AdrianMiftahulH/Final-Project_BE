@@ -62,58 +62,21 @@ app.use(morgan(function (tokens, req, res) {
 
 // == Untuk Halaman ==
 // ==Halaman Login(Belum pakai session) ==
-app.use('/login', async (req, res) => {
+// app.use('/login', async (req, res) => {
     
-});
+// });
 
 // == CRUD user ==
-// Menambahkan user/register
-app.post('/register', routerUser)
-// List semua user
-app.get('/list-user', routerUser)
-// Detail user sesuai dengan id
-app.get('/list-user/detail', routerUser)
-// Mengubah/ mengedit user
-app.put('/update', routerUser)
-// Menghapus user
-app.delete('/list-user/delete', routerUser)
+app.use('/v1/user', routerUser)
 
 // == CRUD kategori ==
-// Menambahkan kategori
-app.post('/add-kat', routerKat)
-// List semua kat
-app.get('/list-kat', routerKat)
-// Detail kat sesuai dengan id
-app.get('/list-kat/detail', routerKat)
-// Mengubah/ mengedit kat
-app.put('/kategori/update', routerKat)
-// Menghapus kat
-app.delete('/list-kat/delete', routerKat)
+app.use('/v1/kategori', routerKat)
 
 // == CRUD supplier ==
-// Menambahkan supplier
-app.post('/add-supp', routerSupp)
-// List semua supp
-app.get('/list-supp', routerSupp)
-// Detail supp sesuai dengan id
-app.get('/list-supp/detail', routerSupp)
-// Mengubah/ mengedit supp
-app.put('/supplier/update', routerSupp)
-// Menghapus supp
-app.delete('/list-supp/delete', routerSupp)
+app.use('/v1/supplier', routerSupp)
 
 // == CRUD barang ==
-// menambahkan barang
-app.post(
-    "/barang/add",
-    // multer({ storage: diskStorage }).single("photo"),
-    (req, res) => {
-        var file = {name:req.body.name,jumlah:req.body.jumlah,foto:req.file.filename};
-        // var data = JSON.parse(JSON.stringify(file))
-        // var target_path = 'uploads/' + req.files.recfile.name;
-        console.log(file);
-    }
-);
+
 
 app.use('/', (req, res) => {
     res.status(404)

@@ -1,0 +1,692 @@
+Standart API
+
+{root.api}/{version}/{grouping}/{endpoint}
+SAMPLE:
+http://example.com/v1/auth/login
+
+standart Status Response
+
+200 - OK --> API success
+201 - CREATED --> post success
+400 - ERROR --> Error dari client (salah input)
+401 - UNAUTHORIZED --> pengguna tidak berwenang untk mengakses
+403 - FORBIDDEN --> hak akses pengguna
+404 _ NOT FOUND --> halaman tidak di temukan
+500 - INTERNAL SERVER ERROR --> Kesalahan dalam server
+502 - BAD GATEWAY --> Res tidak valid dari req
+
+GROUP: Authentication
+
+[1] - Register
+{root.api}/{version}/auth/Register
+
+req:
+{
+    "username": "example",
+    "email": "example@exam.com",
+    "password": "123"
+    "status": "super admin / admin"
+}
+
+res:
+{
+    "msg": "Register Berhasil"
+    "data": {
+        "id_user": 1,
+        "username": "example",
+        "email": "example@exam.com",
+        "password": "123"
+    }
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[2] - Login
+{root.api}/{version}/auth/Login
+
+req:
+{
+    "username": "example",
+    "password": "123"
+}
+
+res:
+{
+    "msg": "Login Berhasil"
+    "data": {
+        "id_user": 1,
+        "username": "example",
+        "email": "example@exam.com",
+        "password": "123"
+    }
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+=== PAGE: SUPER ADMIN ===
+
+GROUP: List User
+
+[1] - List User
+{root.api}/{version}/user/list_user
+
+req:
+{
+    "data" : user.findall()
+}
+
+res:
+{
+    "msg": "List semua data pengguna",
+    "data": [
+        {
+        "id_user": 1,
+        "username": "example",
+        "email": "example@exam.com",
+        "password": "123"
+        },
+        {
+        "id_user": 2,
+        "username": "example2",
+        "email": "example2@exam.com",
+        "password": "123"
+        },
+    ]
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[2] - Detail User
+
+{root.api}/{version}/user/list_user/detail/{req.parms.id_user}
+
+req:
+{
+    "data" : {
+        "id_user": 1 (req.parms.id)
+    }
+}
+
+res:
+{
+    "msg": "Detail data pengguna",
+    "data": [
+        {
+        "id_user": 1,
+        "username": "example",
+        "email": "example@exam.com",
+        "password": "123"
+        },
+    ]
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[3] - Update User
+
+{root.api}/{version}/user/update/{req.parms.id_user}
+
+req:
+{
+    "data" : {
+        "id_user": 1,
+        "username": "example12", //nama yang baru
+        "email": "example12@exam.com", //email yang baru
+        "password": "12334" //pw yang baru
+    }
+}
+
+res:
+{
+    "msg": "Update data pengguna berhasil",
+    "data": {
+        "id_user": 1,
+        "username": "example12",
+        "email": "example12@exam.com",
+        "password": "123334"
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[4] - Delete User
+
+{root.api}/{version}/user/delete/{req.parms.id_user}
+
+req:
+{
+    "data" : {
+        "id_user": 1,
+    }
+}
+
+res:
+{
+    "msg": "Hapus data pengguna berhasil",
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+GROUP: Kategori
+
+[1] - List Kategori
+{root.api}/{version}/list_kat
+
+req:
+{
+    "data" : kats.findall()
+}
+
+res:
+{
+    "msg": "List semua data Kategori",
+    "data": [
+        {
+        "id_kat": 1,
+        "nama_kat": "example"
+        },
+        {
+        "id_kat": 2,
+        "nama_kat": "example2"
+        },
+    ]
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[2] - Tambah Kategori
+
+{root.api}/{version}/list_kat/create_kat
+
+req:
+{
+    "data" : {
+        "nama_kat": "example2"
+    }
+}
+
+res:
+{
+    "msg": "data Kategori berhasil ditambahkan",
+    "data":
+        {
+        "id_kat": 2,
+        "nama_kat": "example2",
+        },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[3] - Update Kategori
+
+{root.api}/{version}/list_kat/update_kat/{req.parms.id_kat}
+
+req:
+{
+    "data" : {
+        "id_kat": 1,
+        "nama_kat": "example12", //nama yang baru
+    }
+}
+
+res:
+{
+    "msg": "Update data Kategori berhasil",
+    "data": {
+        "id_user": 1,
+        "nama_kat": "example12",
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[4] - Delete User
+
+{root.api}/{version}/list_user/delete/{req.parms.id_user}
+
+req:
+{
+    "data" : {
+        "id_user": 1,
+    }
+}
+
+res:
+{
+    "msg": "Hapus data Kategori berhasil",
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+GROUP: Supplier
+
+[1] - List Supplier
+{root.api}/{version}/list_supplier
+
+req:
+{
+    "data" : supps.findall()
+}
+
+res:
+{
+    "msg": "List semua data Supplier",
+    "data": [
+        {
+        "id_supp": 1,
+        "nama_supp": "PT.example",
+        "alamat": "jl.example",
+        "noHP": "080808"
+        },
+        {
+        "id_supp": 2,
+        "nama_supp": "PT.example2"
+        "alamat": "jl.example2",
+        "noHP": "080808"
+        },
+    ]
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[2] - Tambah Supplier
+
+{root.api}/{version}/list_supplier/create_supplier
+
+req:
+{
+    "data" : {
+        "nama_supp": "PT.example3",
+        "alamat": "jl.example3",
+        "noHP": "080808"
+    }
+}
+
+res:
+{
+    "msg": "data supplier berhasil ditambahkan",
+    "data":
+        {
+        "id_kat": 3,
+        "nama_supp": "PT.example3",
+        "alamat": "jl.example3",
+        "noHP": "080808"
+        },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[3] - Update Supplier
+
+{root.api}/{version}/list_supplier/update_supplier/{req.parms.id_supp}
+
+req:
+{
+    "data" : {
+        "id_supp": 1,
+        "nama_supp": "PT.example4",
+        "alamat": "jl.example4",
+        "noHP": "080808"
+    }
+}
+
+res:
+{
+    "msg": "Update data Update berhasil",
+    "data": {
+        "id_user": 1,
+        "nama_supp": "PT.example3",
+        "alamat": "jl.example3",
+        "noHP": "080808"
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[4] - Delete Supplier
+
+{root.api}/{version}/list_supplier/delete_supplier/{req.parms.id_supp}
+
+req:
+{
+    "data" : {
+        "id_supp": 1,
+    }
+}
+
+res:
+{
+    "msg": "Hapus data Kategori berhasil",
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+GROUP: App Log
+
+[1] - List app log
+{root.api}/{version}/app_log
+
+req:
+{
+    "data" : app_log.findall()
+}
+
+res:
+{
+    "msg": "List semua log pengguna",
+    "data": [
+        {
+        "id_appLog": 1,
+        "username": "example",
+        "date": "senin, 1 agustus 2022",
+        "activity": "Lorem ipsum dolor ...."
+        },
+        {
+        "id_appLog": 2,
+        "username": "example2",
+        "date": "senin, 1 agustus 2022",
+        "activity": "Lorem ipsum dolor ...."
+        },
+    ]
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[2] - Detail app log
+{root.api}/{version}/app_log/detail/{req.parms.id_appLog}
+
+req:
+{
+    "data" : app_log.findall()
+}
+
+res:
+{
+    "msg": "List semua log pengguna",
+    "data":{
+        "id_appLog": 1,
+        "username": "example",
+        "date": "senin, 1 agustus 2022",
+        "activity": "Lorem ipsum dolor ...."
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+=== PAGE: ADMIN ===
+
+GROUP: Barang
+
+[1] - List Barang
+{root.api}/{version}/barang
+
+req:
+{
+    "data" : barang.findall()
+}
+
+res:
+{
+    "msg": "List semua Barang",
+    "data": [
+        {
+        "id_barang": 1,
+        "id_supplier": "1", // nama_supplier: "PT.example"
+        "id_kategori": "1", // nama_kat: "example21"
+        "nama_barang": "example",
+        "foto_barang": "1.jpg"
+        "jumlah": "10 pcs"
+        },
+        {
+        "id_barang": 2,
+        "id_supplier": "1", // nama_supplier: "PT.example12"
+        "id_kategori": "1", // nama_kat: "example21"
+        "nama_barang": "example12",
+        "foto_barang": "2.jpg"
+        "jumlah": "100 pcs"
+        },
+    ]
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[2] - Detail Barang
+{root.api}/{version}/barang/detail/{req.prams.id_barang}
+
+req:
+{
+    "data" : {
+        "id_barang" : 1
+    }
+}
+
+res:
+{
+    "msg": "List semua Barang",
+    "data": {
+        "id_barang": 1,
+        "id_supplier": "1", // nama_supplier: "PT.example"
+        "id_kategori": "1", // nama_kat: "example21"
+        "nama_barang": "example",
+        "foto_barang": "1.jpg"
+        "jumlah": "10 pcs"
+        "aktivitas ":[
+            {
+                "tanggal_masuk": "selasa, 2 januari 2022",
+                "jumlah_masuk": "10pcs"
+                "tanggal_keluar": "",
+                "jumlah_keluar": ""
+            },
+            {
+                "tanggal_masuk": "",
+                "jumlah_masuk": "",
+                "tanggal_keluar": "senin, 3 januari 2022",
+                "jumlah_keluar": "10pcs"
+            },
+        ]
+    }
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[3] - Membuat Barang Baru dari Supplier yang ada
+
+{root.api}/{version}/Barang/create_barang
+
+req:
+{
+    "data":{
+        "id_supplier": "1", // nama_supplier: "PT.example"
+        "id_kategori": "1", // nama_kat: "example21"
+        "nama_barang": "example",
+        "foto_barang": "1.jpg"
+        "jumlah": "10 pcs"
+    }
+}
+
+res:
+{
+    "msg": "data berhasil di buat"
+    "data":{
+        "id_barang": 2,
+        "id_supplier": "1", // nama_supplier: "PT.example"
+        "id_kategori": "1", // nama_kat: "example21"
+        "nama_barang": "example",
+        "foto_barang": "1.jpg"
+        "jumlah": "10 pcs"
+        "tanggal_masuk": "selasa, 2 januari 2022"
+        "status": "Barang masuk"
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[4] - Menambahkan Barang Baru dari Supplier yang ada
+
+METHOD: PATCH
+{root.api}/{version}/Barang/add_barang/{req.parms.id_barang}
+
+req:
+{
+    "data":{
+        "id_barang": 2,
+        "jumlah_masuk": "10 pcs"
+    }
+}
+
+res:
+{
+    "msg": "data berhasil di di tambahkan"
+    "data":{
+        "id_barang": 2,
+        "jumlah": "20 pcs" //sebelumnya 10 pcs
+        "tanggal_masuk": "selasa, 3 januari 2022"
+        "status": "Barang masuk"
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[5] - Mengeluarkan Barang
+
+{root.api}/{version}/Barang/exit_barang/{req.prams.id_barang}
+
+req:
+{
+    "data":{
+        "id_barang": 2,
+        "jumlah_keluar": "10 pcs"
+    }
+}
+
+res:
+{
+    "msg": "data berhasil keluar"
+    "data":{
+        "id_barang": 2,
+        "jumlah": "10 pcs" // data sebelumnya 20 pcs
+        "tanggal_keluar": "selasa, 2 januari 2022"
+        "status": "Barang keluar"
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[6] - Mengedit Barang
+
+{root.api}/{version}/Barang/edit_barang/{req.prams.id_barang}
+
+req:
+{
+    "data":{
+        "id_barang": 2,
+        "id_supplier": "1", // nama_supplier: "PT.example"
+        "id_kategori": "1", // nama_kat: "example21"
+        "nama_barang": "example12",
+        "foto_barang": "112.jpg",
+        "jumlah": "10 pcs"
+    }
+}
+
+res:
+{
+    "msg": "data berhasil di edit"
+    "data":{
+        "id_barang": 2,
+        "id_supplier": "1", // nama_supplier: "PT.example"
+        "id_kategori": "1", // nama_kat: "example21"
+        "nama_barang": "example12",
+        "foto_barang": "112.jpg",
+        "jumlah": "10 pcs",
+        "status": "Barang di edit"
+    },
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
+
+[7] - Delete Barang
+
+{root.api}/{version}/Barang/delete_barang/{req.prams.id_barang}
+
+req:
+{
+    "data" : {
+        "id_user": 1,
+    }
+}
+
+res:
+{
+    "msg": "Hapus data barang berhasil",
+}
+
+err-response:
+{
+    (sesuai dengan standart error)
+}
