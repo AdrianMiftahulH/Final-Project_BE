@@ -3,24 +3,22 @@ const {user} = require('../models')
 // List semua data user
 exports.list_user = async (req, res, next) => {
     try {
-        const users = await user.findAll();
-            console.log(users);
-        // //mengambil semua data
-        // const users = await user.findAll({});
-        // console.log(users);
+        //mengambil semua data
+        const users = await user.findAll({});
         // Pengkondisian data ada atau tidak
-        // if (users.length !== 0) {
-        //     res.json({
-        //         'status': 'OK',
-        //         'messages': '',
-        //         'data': users
-        //     });
-        // } else {
-        //     res.json({
-        //         'status': 'EMPTY',
-        //         'messages': 'Data is empty',S
-        //         'data': {} S
-        // }
+        if (users.length !== 0) {
+            res.json({
+                'status': 'OK - 200',
+                'messages': 'List semua data pengguna',
+                'data': users
+            });
+        } else {
+            res.json({
+                'status': 'EMPTY',
+                'messages': 'Data pengguna tidak ada',
+                'data': {}
+            })
+        }
     } catch (err) {
         console.log(err)
             res.status(500).json({
@@ -34,15 +32,15 @@ exports.list_user = async (req, res, next) => {
 exports.detail_user = async (req, res, next) => {
     try {			
         //mengangkap param ID
-        const id = 1;
+        const id = 2;
         // mencari id di db
         const users = await user.findByPk(id);		  
         
         // Pengkondisian user ditemukan atau tidak
         if (users) {
             res.json({
-                'status': 'OK',
-                'messages': '',
+                'status': 'OK - 200',
+                'messages': 'Detail data pengguna',
                 'data': users
             });
         } else {

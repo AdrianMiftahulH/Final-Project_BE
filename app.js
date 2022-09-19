@@ -16,14 +16,6 @@ const flash = require('connect-flash');
 var morgan = require('morgan');
 const multer = require('multer');
 
-// Memanggil db (buat latihan)
-const {user} = require('./models');
-
-// Definisi lokasi route
-const routerUser = require('./routes/user')
-const routerKat = require('./routes/kategori')
-const routerSupp = require('./routes/supplier.js')
-
 // == Konfigurasi==
 // Configurasi dan gunakan library
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -60,11 +52,15 @@ app.use(morgan(function (tokens, req, res) {
     ].join(' ')
 }));
 
-// == Untuk Halaman ==
-// ==Halaman Login(Belum pakai session) ==
-// app.use('/login', async (req, res) => {
-    
-// });
+// Definisi lokasi route
+const routerUser = require('./routes/user')
+const routerKat = require('./routes/kategori')
+const routerSupp = require('./routes/supplier')
+const routerAuth = require('./routes/auth')
+
+// === Untuk Halaman ===
+// == Authentication ==
+app.use('/v1/auth/', routerAuth)
 
 // == CRUD user ==
 app.use('/v1/user', routerUser)
@@ -77,7 +73,7 @@ app.use('/v1/supplier', routerSupp)
 
 // == CRUD barang ==
 
-
+// == Kondsis halaman tidak di temukan ==
 app.use('/', (req, res) => {
     res.status(404)
     res.send(`page not found`)

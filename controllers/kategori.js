@@ -3,7 +3,7 @@ const {kategori} = require('../models');
 // Menambahkan kategori
 exports.add_kat = async (req, res, next) => {
     try {
-        const nama_kat = body.params.nama
+        const nama_kat = req.body
         //membuat data baru di db menggunakan method create
         const kat = await kategori.create({
             nama_kat
