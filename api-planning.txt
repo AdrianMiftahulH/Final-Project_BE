@@ -257,7 +257,7 @@ res:
 {
     "msg": "Update data Kategori berhasil",
     "data": {
-        "id_user": 1,
+        "id_kat": 1,
         "nama_kat": "example12",
     },
 }
@@ -267,14 +267,14 @@ err-response:
     (sesuai dengan standart error)
 }
 
-[4] - Delete User
+[4] - Delete Kategori
 
-{root.api}/{version}/list_user/delete/{req.parms.id_user}
+{root.api}/{version}/list_kat/delete/{req.parms.id_kat}
 
 req:
 {
     "data" : {
-        "id_user": 1,
+        "id_kat": 1,
     }
 }
 
@@ -370,7 +370,7 @@ res:
 {
     "msg": "Update data Update berhasil",
     "data": {
-        "id_user": 1,
+        "id_supp": 1,
         "nama_supp": "PT.example3",
         "alamat": "jl.example3",
         "noHP": "080808"

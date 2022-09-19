@@ -1,16 +1,16 @@
 const express = require('express')
 const router = express.Router();
 
-const { add_supp, list_supp, detail_supp, update_supp, hapus_supp } = require('../controllers/supplier')
+const suppController = require('../controllers/supplier')
 
-router.post('/add-supp', add_supp);
+router.post('/add-supp', suppController.add_supp);
 
-router.get('/list-supp', list_supp)
+router.get('/list-supp', suppController.list_supp)
 
-router.get('/list-supp/detail', detail_supp)
+router.get('/list-supp/detail', suppController.detail_supp)
 
-router.put('/supplier/update', update_supp)
+router.put('/supplier/update', suppController.update_supp)
 
-router.delete('/list-supp/delete', hapus_supp)
+router.delete('/list-supp/delete', suppController.hapus_supp)
 
 module.exports = router

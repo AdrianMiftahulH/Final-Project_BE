@@ -3,7 +3,7 @@ const {kategori} = require('../models');
 // Menambahkan kategori
 exports.add_kat = async (req, res, next) => {
     try {
-        const nama_kat = req.body
+        const {nama_kat} = req.body
         //membuat data baru di db menggunakan method create
         const kat = await kategori.create({
             nama_kat
@@ -11,13 +11,13 @@ exports.add_kat = async (req, res, next) => {
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
         if (kat) {
             res.status(201).json({
-            'status': 'OK',
+            'status': '201 - CREATED',
             'messages': 'kategori berhasil ditambahkan',
             'data': kat
             });
         }
         } catch(err) {
-        res.status(400).json({
+        res.status(500).json({
             'status': 'ERROR',
             'messages': err.message
         });
@@ -30,10 +30,11 @@ exports.list_kat = async (req, res, next) => {
         //mengambil semua data
         const kats = await kategori.findAll({});
         
+        // Pengkondisian data atau tidak
         if (kats.length !== 0) {
             res.json({
-                'status': 'OK',
-                'messages': '',
+                'status': '200 - OK',
+                'messages': 'List semua data Kategori',
                 'data': kats
             });
             } else {
@@ -51,33 +52,6 @@ exports.list_kat = async (req, res, next) => {
     }
 }
 
-// Detail kat sesuai dengan id
-exports.detail_kat = async (req, res, next) => {
-    try {			
-        //mengangkap param ID
-        const id = 1;
-        const kats = await kategori.findByPk(id);		  
-    
-        if (kats) {
-            res.json({
-                'status': 'OK',
-                'messages': '',
-                'data': kats
-            });
-        } else {
-            res.status(404).json({
-                'status': 'NOT_FOUND',
-                'messages': 'Data not found',
-                'data': null 
-            });
-        }
-    } catch (err) {		
-        res.status(500).json({
-            'status': 'ERROR',
-            'messages': 'Internal Server Error'
-        })
-    }
-}
 
 // Mengubah/ mengedit kat
 exports.update_kat = async (req, res, nex) =>{
@@ -95,8 +69,8 @@ exports.update_kat = async (req, res, nex) =>{
     
         if (kats) {
             res.json({
-            'status': 'OK',
-            'messages': 'kat berhasil diubah'
+            'status': '201 - CREATED',
+            'messages': 'Kategori berhasil diubah'
             })
         }
     } catch(err) {
@@ -119,7 +93,7 @@ exports.hapus_kat = async (req, res, nex) =>{
     
         if (kats) {
             res.json({
-                'status': 'OK',
+                'status': '200 - OK',
                 'messages': 'kats berhasil dihapus'
             })
         }

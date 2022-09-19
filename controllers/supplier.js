@@ -4,26 +4,28 @@ const {supplier} = require('../models');
 exports.add_supp = async (req, res, next) => {
     try {
         // Mengambil data dari form
-        const nama = "PT.gada";
-        const alamat = 'jl.gada';
-        const noHp = 0899999;
+        const {
+            nama_supp,
+            alamat,
+            noHp
+        } = req.body
         //membuat data baru di db menggunakan method create
         const supp = await supplier.create({
-            nama,
+            nama_supp,
             alamat,
             noHp
             });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
         if (supp) {
             res.status(201).json({
-            'status': 'OK',
+            'status': '201 - CREATED',
             'messages': 'supplier berhasil ditambahkan',
             'data': supp
             });
         }
     } catch(err) {
         res.status(400).json({
-            'status': 'ERROR',
+            'status': '400 - ERROR',
             'messages': err.message
         });
     }
@@ -38,8 +40,8 @@ exports.list_supp = async (req, res, next) => {
         // Pengkondisian data ada atau tidak di database
         if (supps.length !== 0) {
             res.json({
-                'status': 'OK',
-                'messages': '',
+                'status': '200 - OK',
+                'messages': 'Data list supplier',
                 'data': supps
             });
         } else {
@@ -51,7 +53,7 @@ exports.list_supp = async (req, res, next) => {
         }
     } catch (err) {
             res.status(500).json({
-                'status': 'ERROR',
+                'status': '500 - INTERNAL SERVER ERROR',
                 'messages': 'Internal Server Error'
         })
     }
@@ -66,20 +68,20 @@ exports.detail_supp = async (req, res, next) => {
     
         if (supps) {
             res.json({
-                'status': 'OK',
-                'messages': '',
+                'status': '200 - OK',
+                'messages': 'Detail Supplier',
                 'data': supps
             });
         } else {
             res.status(404).json({
-                'status': 'NOT_FOUND',
+                'status': '404 - NOT FOUND',
                 'messages': 'Data not found',
                 'data': null 
             });
         }
     } catch (err) {		
         res.status(500).json({
-            'status': 'ERROR',
+            'status': '500 - INTERNAL SERVER ERROR',
             'messages': 'Internal Server Error'
         })
     }
@@ -110,9 +112,9 @@ exports.update_supp = async (req, res, nex) =>{
             })
         }
     } catch(err) {
-        res.status(400).json({
-            'status': 'ERROR',
-            'messages': err.message
+        res.status(500).json({
+            'status': '500 - INTERNAL SERVER ERROR',
+            'messages': 'Internal Server Error'
         })
     }
 }
@@ -129,14 +131,14 @@ exports.hapus_supp = async (req, res, nex) =>{
     
         if (supps) {
             res.json({
-                'status': 'OK',
-                'messages': 'supps berhasil dihapus'
+                'status': '201 - OK',
+                'messages': 'Supplier berhasil dihapus'
             })
         }
     } catch(err) {
-        res.status(400).json({
-            'status': 'ERROR',
-            'messages': err.message
+        res.status(500).json({
+            'status': '500 - INTERNAL SERVER ERROR',
+            'messages': 'Internal Server Error'
         })
     }
 }
