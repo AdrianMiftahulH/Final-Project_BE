@@ -1,16 +1,16 @@
 const express = require('express')
 const router = express.Router();
 
-// Menghubungkan dengan controller
-const { add_kat, list_kat, detail_kat, update_kat, hapus_kat } = require('../controllers/kategori')
+// Menghubungkan dengan controller kategori
+const katController = require('../controllers/kategori')
 
 // Router menambahkan 
-router.post('/add-kat', add_kat);
+router.post('/add-kat', katController.add_kat);
 // Router list semua data 
-router.get('/list-kat', list_kat)
+router.get('/list-kat', katController.list_kat)
 // Router edit 
-router.put('/kategori/update', update_kat)
+router.put('/kategori/update', katController.update_kat)
 // Router hapus data 
-router.delete('/list-kat/delete', hapus_kat)
+router.delete('/list-kat/delete', katController.hapus_kat)
 
 module.exports = router

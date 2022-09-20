@@ -466,7 +466,7 @@ err-response:
 GROUP: Barang
 
 [1] - List Barang
-{root.api}/{version}/barang
+{root.api}/{version}/barang/list_bar
 
 req:
 {
@@ -482,7 +482,7 @@ res:
         "id_supplier": "1", // nama_supplier: "PT.example"
         "id_kategori": "1", // nama_kat: "example21"
         "nama_barang": "example",
-        "foto_barang": "1.jpg"
+        "foto": "1.jpg"
         "jumlah": "10 pcs"
         },
         {
@@ -490,7 +490,7 @@ res:
         "id_supplier": "1", // nama_supplier: "PT.example12"
         "id_kategori": "1", // nama_kat: "example21"
         "nama_barang": "example12",
-        "foto_barang": "2.jpg"
+        "foto": "2.jpg"
         "jumlah": "100 pcs"
         },
     ]
@@ -519,7 +519,7 @@ res:
         "id_supplier": "1", // nama_supplier: "PT.example"
         "id_kategori": "1", // nama_kat: "example21"
         "nama_barang": "example",
-        "foto_barang": "1.jpg"
+        "foto": "1.jpg"
         "jumlah": "10 pcs"
         "aktivitas ":[
             {
@@ -553,8 +553,8 @@ req:
         "id_supplier": "1", // nama_supplier: "PT.example"
         "id_kategori": "1", // nama_kat: "example21"
         "nama_barang": "example",
-        "foto_barang": "1.jpg"
-        "jumlah": "10 pcs"
+        "foto": "1.jpg"
+        "jumlah": "10pcs"
     }
 }
 
@@ -566,10 +566,10 @@ res:
         "id_supplier": "1", // nama_supplier: "PT.example"
         "id_kategori": "1", // nama_kat: "example21"
         "nama_barang": "example",
-        "foto_barang": "1.jpg"
+        "foto": "1.jpg"
         "jumlah": "10 pcs"
         "tanggal_masuk": "selasa, 2 januari 2022"
-        "status": "Barang masuk"
+        "status": "Barang ditambahkan"
     },
 }
 
@@ -595,6 +595,7 @@ res:
 {
     "msg": "data berhasil di di tambahkan"
     "data":{
+        "id_flow": 1,
         "id_barang": 2,
         "jumlah": "20 pcs" //sebelumnya 10 pcs
         "tanggal_masuk": "selasa, 3 januari 2022"
@@ -623,6 +624,7 @@ res:
 {
     "msg": "data berhasil keluar"
     "data":{
+        "id_flow": 1,
         "id_barang": 2,
         "jumlah": "10 pcs" // data sebelumnya 20 pcs
         "tanggal_keluar": "selasa, 2 januari 2022"
@@ -646,8 +648,7 @@ req:
         "id_supplier": "1", // nama_supplier: "PT.example"
         "id_kategori": "1", // nama_kat: "example21"
         "nama_barang": "example12",
-        "foto_barang": "112.jpg",
-        "jumlah": "10 pcs"
+        "foto": "112.jpg"
     }
 }
 
@@ -659,8 +660,7 @@ res:
         "id_supplier": "1", // nama_supplier: "PT.example"
         "id_kategori": "1", // nama_kat: "example21"
         "nama_barang": "example12",
-        "foto_barang": "112.jpg",
-        "jumlah": "10 pcs",
+        "foto": "112.jpg"
         "status": "Barang di edit"
     },
 }

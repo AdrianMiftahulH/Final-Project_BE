@@ -1,0 +1,164 @@
+const {barang} = require('../models');
+
+// Menambahkan Barang
+exports.add_bar = async (req, res, next) => {
+    try {
+        const {
+            id_supp,
+            id_kat,
+            nama_barang,
+            foto,
+            jumlah,
+            desc
+        } = req.body
+        //membuat data baru di db menggunakan method create
+        const barangs = await barang.create({
+            id_supp,
+            id_kat,
+            nama_barang,
+            foto,
+            jumlah,
+            desc
+            });
+        //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
+        if (barangs) {
+            res.status(201).json({
+            'status': '201 - CREATED',
+            'messages': 'kategori berhasil ditambahkan',
+            'data': barangs
+            });
+        }
+        } catch(err) {
+        res.status(500).json({
+            'status': 'ERROR',
+            'messages': err.message
+        });
+    }
+}
+
+// List semua Barang
+exports.list_bar = async (req, res, next) => {
+    try {
+        //mengambil semua data
+        const barangs = await barang.findAll(
+            {
+                include: [
+                    'kategori',
+                    'supplier'
+                ]
+            }
+        ); 
+        
+        // Pengkondisian data atau tidak
+        if (barangs.length !== 0) {
+            res.json({
+                'status': '200 - OK',
+                'messages': 'List semua data Barang',
+                'data': barangs
+            });
+            } else {
+            res.json({
+                'status': 'EMPTY',
+                'messages': 'Data is empty',
+                'data': {} 
+            });
+        }
+        } catch (err) {
+            res.status(500).json({
+                'status': 'ERROR',
+                'messages': 'Internal Server Error'
+        })
+    }
+}
+
+// Detail barang sesuai dengan id
+exports.detail_bar = async (req, res, next) => {
+    try {			
+        //mengangkap param ID
+        const id = 1;
+        const bars = await barang.findByPk(id);		  
+    
+        if (bars) {
+            res.json({
+                'status': '200 - OK',
+                'messages': 'Detail Supplier',
+                'data': bars
+            });
+        } else {
+            res.status(404).json({
+                'status': '404 - NOT FOUND',
+                'messages': 'Data not found',
+                'data': null 
+            });
+        }
+    } catch (err) {		
+        res.status(500).json({
+            'status': '500 - INTERNAL SERVER ERROR',
+            'messages': 'Internal Server Error'
+        })
+    }
+};
+
+// Mengubah/ mengedit barang
+exports.update_bar = async (req, res, nex) =>{
+    try {
+        const id = 1
+        const {
+            id_supplier,
+            id_kategori,
+            nama_barang,
+            foto,
+            jumlah,
+            desc
+        } = req.body
+        // mengupdate data sesuai id
+        const barangs = barang.update({
+            id_supplier,
+            id_kategori,
+            nama_barang,
+            foto,
+            jumlah,
+            desc
+        }, {
+            where: {
+                id: id
+            }
+        })
+    
+        if (barangs) {
+            res.json({
+            'status': '201 - CREATED',
+            'messages': 'data barang berhasil diubah'
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            'status': 'ERROR',
+            'messages': err.message
+        })
+    }
+}
+
+// Menghapus kat
+exports.hapus_bar = async (req, res, nex) =>{
+    try {
+        const id = 1
+        const barangs = barang.destroy({
+            where: {
+                id: id
+            }
+        })
+    
+        if (barangs) {
+            res.json({
+                'status': '200 - OK',
+                'messages': 'data barang berhasil dihapus'
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            'status': 'ERROR',
+            'messages': err.message
+        })
+    }
+}

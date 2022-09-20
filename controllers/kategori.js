@@ -58,7 +58,7 @@ exports.update_kat = async (req, res, nex) =>{
     try {
         const id = 1
         const nama = "celana"
-        
+        // mengupdate data sesuai id
         const kats = kategori.update({
             nama
         }, {

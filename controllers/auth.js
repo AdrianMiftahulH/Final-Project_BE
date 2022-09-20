@@ -1,8 +1,9 @@
 const {user} = require('../models');
 
 // Register
-exports.register = async (req, res, next) => {
+exports.saveRegister = async (req, res, next) => {
     try {
+        // mengambil data dari inputan
         const {
             username,
             email,

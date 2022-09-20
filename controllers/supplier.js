@@ -15,7 +15,7 @@ exports.add_supp = async (req, res, next) => {
             alamat,
             noHp
             });
-        //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
+        //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status CREATED
         if (supp) {
             res.status(201).json({
             'status': '201 - CREATED',
@@ -95,6 +95,7 @@ exports.update_supp = async (req, res, nex) =>{
         const alamat = 'jl.gtau';
         const noHp = 0899999;
         
+        // Mengupdate data yang di input sesuai id
         const supp = supplier.update({
             nama,
             alamat,

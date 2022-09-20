@@ -57,6 +57,7 @@ const routerUser = require('./routes/user')
 const routerKat = require('./routes/kategori')
 const routerSupp = require('./routes/supplier')
 const routerAuth = require('./routes/auth')
+const routerBar = require('./routes/barang')
 
 // === Untuk Halaman ===
 // == Authentication ==
@@ -72,6 +73,7 @@ app.use('/v1/kategori', routerKat)
 app.use('/v1/supplier', routerSupp)
 
 // == CRUD barang ==
+app.use('/v1/barang', routerBar)
 
 // == Kondsis halaman tidak di temukan ==
 app.use('/', (req, res) => {
