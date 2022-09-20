@@ -3,24 +3,28 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class kategori extends Model {
+  class flow extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      kategori.hasMany(models.barang, {
-        foreignKey: 'id_kat',
+      flow.belongsTo(models.barang,{
+        foreignKey: 'id_barang',
         as: 'barang'
       })
     }
   }
-  kategori.init({
-    nama_kat: DataTypes.STRING
+  flow.init({
+    id_barang: DataTypes.INTEGER,
+    jumlah: DataTypes.INTEGER,
+    status: DataTypes.STRING,
+    nama_barang: DataTypes.STRING,
+    nama_penerima: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'kategori',
+    modelName: 'flow',
   });
-  return kategori;
+  return flow;
 };

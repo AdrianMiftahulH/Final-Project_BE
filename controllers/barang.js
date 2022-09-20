@@ -1,7 +1,8 @@
-const {barang} = require('../models');
+const {barang, flow} = require('../models');
 
-// Menambahkan Barang
-exports.add_bar = async (req, res, next) => {
+// === Barang ===
+// Membuat data Barang
+exports.create_bar = async (req, res, next) => {
     try {
         const {
             id_supp,
@@ -24,7 +25,7 @@ exports.add_bar = async (req, res, next) => {
         if (barangs) {
             res.status(201).json({
             'status': '201 - CREATED',
-            'messages': 'kategori berhasil ditambahkan',
+            'messages': 'Barang berhasil ditambahkan',
             'data': barangs
             });
         }
@@ -75,7 +76,7 @@ exports.list_bar = async (req, res, next) => {
 exports.detail_bar = async (req, res, next) => {
     try {			
         //mengangkap param ID
-        const id = 1;
+        const id = req.parms.id;
         const bars = await barang.findByPk(id);		  
     
         if (bars) {
@@ -104,8 +105,8 @@ exports.update_bar = async (req, res, nex) =>{
     try {
         const id = 1
         const {
-            id_supplier,
-            id_kategori,
+            id_supp,
+            id_kat,
             nama_barang,
             foto,
             jumlah,
@@ -113,8 +114,8 @@ exports.update_bar = async (req, res, nex) =>{
         } = req.body
         // mengupdate data sesuai id
         const barangs = barang.update({
-            id_supplier,
-            id_kategori,
+            id_supp,
+            id_kat,
             nama_barang,
             foto,
             jumlah,
@@ -153,6 +154,48 @@ exports.hapus_bar = async (req, res, nex) =>{
             res.json({
                 'status': '200 - OK',
                 'messages': 'data barang berhasil dihapus'
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            'status': 'ERROR',
+            'messages': err.message
+        })
+    }
+}
+
+
+// === Flow ===
+
+// Menambahkan Barang
+exports.add_bar = async (req, res, nex) =>{
+    try {
+        const {
+            id,
+            id_barang,
+            nama_pemberi,
+            nama_penerima,
+            jumlah,
+            
+        } = req.body
+        // mengupdate data sesuai id
+        const barangs = barang.update({
+            id_supp,
+            id_kat,
+            nama_barang,
+            foto,
+            jumlah,
+            desc
+        }, {
+            where: {
+                id: id
+            }
+        })
+    
+        if (barangs) {
+            res.json({
+            'status': '201 - CREATED',
+            'messages': 'data barang berhasil diubah'
             })
         }
     } catch(err) {

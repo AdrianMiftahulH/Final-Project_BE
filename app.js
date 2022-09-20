@@ -75,7 +75,9 @@ app.use('/v1/supplier', routerSupp)
 // == CRUD barang ==
 app.use('/v1/barang', routerBar)
 
-// == Kondsis halaman tidak di temukan ==
+// == Flow ==
+
+// == Kondisi halaman tidak di temukan ==
 app.use('/', (req, res) => {
     res.status(404)
     res.send(`page not found`)

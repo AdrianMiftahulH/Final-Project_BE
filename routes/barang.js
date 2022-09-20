@@ -5,11 +5,11 @@ const router = express.Router();
 const barController = require('../controllers/barang')
 
 // Router menambahkan 
-router.post('/add-bar', barController.add_bar);
+router.post('/create-bar', barController.create_bar);
 // Router list semua data 
 router.get('/list-bar', barController.list_bar)
 // Router detail
-router.put('/detail', barController.detail_bar)
+router.get('/detail/:id', barController.detail_bar)
 // Router edit 
 router.put('/update', barController.update_bar)
 // Router hapus data 

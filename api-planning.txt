@@ -587,7 +587,9 @@ req:
 {
     "data":{
         "id_barang": 2,
-        "jumlah_masuk": "10 pcs"
+        "jumlah_masuk": "10 pcs",
+        "tanggal_masuk": "3 januari 2022"
+        "status": "Barang masuk"
     }
 }
 

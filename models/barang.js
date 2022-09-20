@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       barang.belongsTo(models.supplier,{
         foreignKey: 'id_supp',
         as: 'supplier'
+      }),
+      barang.hasMany(models.flow, {
+        foreignKey: 'id_',
+        as: 'barangs'
       })
     }
   }
