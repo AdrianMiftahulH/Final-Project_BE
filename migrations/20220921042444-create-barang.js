@@ -1,30 +1,30 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('flows', {
+    await queryInterface.createTable('barangs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_barang: {
+      id_kat: {
         type: Sequelize.INTEGER
       },
-      nama_pemberi: {
-        type: Sequelize.STRING
+      id_supp: {
+        type: Sequelize.INTEGER
       },
-      nama_penerima: {
+      nama_barang: {
         type: Sequelize.STRING
       },
       jumlah: {
         type: Sequelize.INTEGER
       },
-      status: {
+      foto: {
         type: Sequelize.STRING
       },
-      tanggal: {
-        type: Sequelize.DATE
+      desc: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +37,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('flows');
+    await queryInterface.dropTable('barangs');
   }
 };

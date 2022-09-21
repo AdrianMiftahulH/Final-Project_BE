@@ -5,20 +5,20 @@ const {barang, flow} = require('../models');
 exports.create_bar = async (req, res, next) => {
     try {
         const {
-            id_supp,
             id_kat,
+            id_supp,
             nama_barang,
-            foto,
             jumlah,
+            foto,
             desc
         } = req.body
         //membuat data baru di db menggunakan method create
         const barangs = await barang.create({
-            id_supp,
             id_kat,
+            id_supp,
             nama_barang,
-            foto,
             jumlah,
+            foto,
             desc
             });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
@@ -105,20 +105,20 @@ exports.update_bar = async (req, res, nex) =>{
     try {
         const id = 1
         const {
-            id_supp,
             id_kat,
+            id_supp,
             nama_barang,
-            foto,
             jumlah,
+            foto,
             desc
         } = req.body
         // mengupdate data sesuai id
         const barangs = barang.update({
-            id_supp,
             id_kat,
+            id_supp,
             nama_barang,
-            foto,
             jumlah,
+            foto,
             desc
         }, {
             where: {
@@ -166,42 +166,3 @@ exports.hapus_bar = async (req, res, nex) =>{
 
 
 // === Flow ===
-
-// Menambahkan Barang
-exports.add_bar = async (req, res, nex) =>{
-    try {
-        const {
-            id,
-            id_barang,
-            nama_pemberi,
-            nama_penerima,
-            jumlah,
-            
-        } = req.body
-        // mengupdate data sesuai id
-        const barangs = barang.update({
-            id_supp,
-            id_kat,
-            nama_barang,
-            foto,
-            jumlah,
-            desc
-        }, {
-            where: {
-                id: id
-            }
-        })
-    
-        if (barangs) {
-            res.json({
-            'status': '201 - CREATED',
-            'messages': 'data barang berhasil diubah'
-            })
-        }
-    } catch(err) {
-        res.status(400).json({
-            'status': 'ERROR',
-            'messages': err.message
-        })
-    }
-}

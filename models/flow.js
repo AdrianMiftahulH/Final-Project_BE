@@ -18,10 +18,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   flow.init({
     id_barang: DataTypes.INTEGER,
+    nama_pemberi: DataTypes.STRING,
+    nama_penerima: DataTypes.STRING,
     jumlah: DataTypes.INTEGER,
     status: DataTypes.STRING,
-    nama_barang: DataTypes.STRING,
-    nama_penerima: DataTypes.STRING
+    tanggal: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'flow',

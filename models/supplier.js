@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   supplier.init({
     nama_supp: DataTypes.STRING,
     alamat: DataTypes.STRING,
-    noHp: DataTypes.INTEGER
+    mobile: DataTypes.NUMERIC
   }, {
     sequelize,
     modelName: 'supplier',

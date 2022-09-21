@@ -58,6 +58,7 @@ const routerKat = require('./routes/kategori')
 const routerSupp = require('./routes/supplier')
 const routerAuth = require('./routes/auth')
 const routerBar = require('./routes/barang')
+const routerFlow = require('./routes/flow')
 
 // === Untuk Halaman ===
 // == Authentication ==
@@ -76,6 +77,7 @@ app.use('/v1/supplier', routerSupp)
 app.use('/v1/barang', routerBar)
 
 // == Flow ==
+app.use('/v1/flow', routerFlow)
 
 // == Kondisi halaman tidak di temukan ==
 app.use('/', (req, res) => {

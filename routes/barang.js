@@ -4,7 +4,7 @@ const router = express.Router();
 // Menghubungkan dengan controller kategori
 const barController = require('../controllers/barang')
 
-// Router menambahkan 
+// Router membuat 
 router.post('/create-bar', barController.create_bar);
 // Router list semua data 
 router.get('/list-bar', barController.list_bar)

@@ -19,16 +19,16 @@ module.exports = (sequelize, DataTypes) => {
         as: 'supplier'
       }),
       barang.hasMany(models.flow, {
-        foreignKey: 'id_',
-        as: 'barangs'
+        foreignKey: 'id_barang',
+        as: 'flow'
       })
     }
   }
   barang.init({
-    id_supp: DataTypes.INTEGER,
     id_kat: DataTypes.INTEGER,
+    id_supp: DataTypes.INTEGER,
     nama_barang: DataTypes.STRING,
-    jumlah: DataTypes.NUMERIC,
+    jumlah: DataTypes.INTEGER,
     foto: DataTypes.STRING,
     desc: DataTypes.TEXT
   }, {

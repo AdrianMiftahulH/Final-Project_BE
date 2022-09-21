@@ -14,8 +14,8 @@ module.exports = {
       alamat: {
         type: Sequelize.STRING
       },
-      noHp: {
-        type: Sequelize.INTEGER
+      mobile: {
+        type: Sequelize.NUMERIC
       },
       createdAt: {
         allowNull: false,

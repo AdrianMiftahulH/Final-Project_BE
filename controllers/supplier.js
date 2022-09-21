@@ -7,13 +7,13 @@ exports.add_supp = async (req, res, next) => {
         const {
             nama_supp,
             alamat,
-            noHp
+            mobile
         } = req.body
         //membuat data baru di db menggunakan method create
         const supp = await supplier.create({
             nama_supp,
             alamat,
-            noHp
+            mobile
             });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status CREATED
         if (supp) {
@@ -93,13 +93,13 @@ exports.update_supp = async (req, res, nex) =>{
         const id = 1
         const nama = "PT.gtau";
         const alamat = 'jl.gtau';
-        const noHp = 0899999;
+        const mobile = 0899999;
         
         // Mengupdate data yang di input sesuai id
         const supp = supplier.update({
             nama,
             alamat,
-            noHp
+            mobile
         }, {
             where: {
                 id: id
