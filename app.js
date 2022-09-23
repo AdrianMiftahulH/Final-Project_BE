@@ -15,10 +15,18 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 var morgan = require('morgan');
 const multer = require('multer');
+const dotenv = require('dotenv').config()
+const db = require("./models");
+const Role = db.role;
+
+db.sequelize.sync({force: true}).then(() => {
+    console.log('Drop and Resync Db');
+    initial();
+});
 
 // == Konfigurasi==
 // Configurasi dan gunakan library
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use(express.static('public'))
@@ -51,6 +59,19 @@ app.use(morgan(function (tokens, req, res) {
         tokens['response-time'](req, res), 'ms'
     ].join(' ')
 }));
+
+// Membuat fungsi role
+function initial() {
+    Role.create({
+        id: 1,
+        name: "admin"
+    });
+
+    Role.create({
+        id: 2,
+        name: "super admin"
+    });
+}
 
 // Definisi lokasi route
 const routerUser = require('./routes/user')
