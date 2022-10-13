@@ -1,5 +1,6 @@
 const {User} = require('../models')
 const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
 
 // List semua data user
 exports.list_user = async (req, res) => {
@@ -64,29 +65,33 @@ exports.detail_user = async (req, res, next) => {
 // Menambahkan User
 exports.add_user = async (req, res) => {
     const {username, email, password, confPassword, role} = req.body;
-    const usernameCheck = await User.findOne({
-        where: {
-            username: req.body.username,
-        },
-    });
-      //if username exist in the database respond with a status of 409
-    if (usernameCheck) {
-        return res.status(409).json({ msg : "username already taken"});
-    }
 
-    //checking if email already exist
-    const emailcheck = await User.findOne({
-        where: {
-            email: req.body.email,
-        },
-    });
+    // mencari username di db sesuai dengan req username
+    // const usernameCheck = await User.findOne({
+    //     where: {
+    //         username: req.body.username,
+    //     },
+    // });
+    // //jika username req sama dengan username di db
+    // if (usernameCheck) {
+    //     return res.status(409).json({ msg : "username already taken"});
+    // }
 
-      //if email exist in the database respond with a status of 409
-    if (emailcheck) {
-        return res.status(409).json({msg :"Authentication failed"});
-    }
+    // // mencari email di db sesuai dengan req email
+    // const emailcheck = await User.findOne({
+    //     where: {
+    //         email: req.body.email,
+    //     },
+    // });
+    // //jika email req sama dengan email di db
+    // if (emailcheck) {
+    //     return res.status(409).json({msg :"Authentication failed"});
+    // }
+
+    // Mengecek password dengan confpassword sama apa beda
     if(password !== confPassword) return res.status(400).json({msg: "Password dan Confirm password tidak valid"})
     const hashPassword = await argon2.hash(password)
+
     try {
         //membuat data baru di db menggunakan method create
         const users = await User.create({
@@ -97,6 +102,15 @@ exports.add_user = async (req, res) => {
         });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
         if (users) {
+            // membuat jwt sesuai akun 
+            let token = jwt.sign({ id: users.id }, process.env.secretKey, {
+                expiresIn: 1 * 24 * 60 * 60 * 1000,
+            });
+
+            res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+            console.log("users", JSON.stringify(users, null, 2));
+            console.log(token);
+
             res.status(201).json({
             'status': 'OK',
             'messages': 'users berhasil ditambahkan',

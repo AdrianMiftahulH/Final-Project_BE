@@ -9,7 +9,7 @@ router.get('/list-user', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userC
 // Mengambil data sesuai id
 router.get('/detail/:id', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userController.detail_user)
 // Menmbahkan data user
-router.post('/create', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userController.add_user)
+router.post('/create',  VerifyUser.superAdminOnly, userController.add_user)
 // Mengupdate data user
 router.patch('/update/:id', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userController.update_user)
 // Menghapus data user sesuai id
