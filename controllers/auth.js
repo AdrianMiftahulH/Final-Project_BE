@@ -1,87 +1,40 @@
-const db = require("../models");
-const config = require("../config/auth");
-const User = db.user;
-const Role = db.role;
+const {User} = require('../models');
+const argon2 = require('argon2');
 
-const Op = db.Sequelize.Op;
-
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
-
-exports.signup = (req, res) => {
-  // Save User to Database
-    User.create({
-        username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
-    })
-    .then(user => {
-        if (req.body.roles) {
-            Role.findAll({
-            where: {
-                name: {
-                [Op.or]: req.body.roles
-                }
-            }
-            }).then(roles => {
-                user.setRoles(roles).then(() => {
-                    res.send({ message: "User was registered successfully!" });
-                });
-            });
-        } else {
-            // user role = 1
-            user.setRoles([1]).then(() => {
-                res.send({ message: "User was registered successfully!" });
-            });
-        }
-    })
-    .catch(err => {
-        res.status(500).send({ message: err.message });
-    });
-};
-
-exports.signin = (req, res) => {
-    User.findOne({
+exports.Login = async (req, res) => {
+    const user = await User.findOne({
         where: {
-        username: req.body.username
+            email: req.body.email
         }
-    })
-    .then(user => {
-        if (!user) {
-            return res.status(404).send({ message: "User Not found." });
-        }
-
-        var passwordIsValid = bcrypt.compareSync(
-            req.body.password,
-            user.password
-        );
-
-        if (!passwordIsValid) {
-            return res.status(401).send({
-            accessToken: null,
-            message: "Invalid Password!"
-            });
-        }
-
-        var token = jwt.sign({ id: user.id }, config.secret, {
-            expiresIn: 86400 // 24 hours
-        });
-
-        var authorities = [];
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-            authorities.push("ROLE_" + roles[i].name.toUpperCase());
-            }
-            res.status(200).send({
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            roles: authorities,
-            accessToken: token
-            });
-        });
-    })
-    .catch(err => {
-        res.status(500).send({ message: err.message });
     });
-};
+    if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
+    const match = await argon2.verify(user.password, req.body.password);
+    if(!match) return res.status(400).json({msg:"Wrong Password"});
+    req.session.userId = user.id;
+    const id = user.id;
+    const username = user.username;
+    const email = user.email;
+    const role = user.role;
+    res.status(200).json({id, username, email, role});
+}
+
+exports.Me = async (req, res) => {
+    if(!req.session.userId){
+        return res.status(401).json({msg: "Mohon untuk login"});
+    }
+    const user = await User.findOne({
+        attributes:['id', 'username', 'email', 'role'],
+        where: {
+            id: req.session.userId
+        }
+    });
+    if(!user) return res.status(404).json({msg: "User tidak di temukan"});
+    res.status(200).json(user)
+}
+
+exports.logOut = (req, res) => {
+    req.session.destroy((err) => {
+        if(err) return res.status(400).json({msg: "tidak dapat logout"});
+        res.status(200).json({msg:"anda telah logout"})
+    })
+}

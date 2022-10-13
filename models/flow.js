@@ -10,19 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      flow.belongsTo(models.barang,{
-        foreignKey: 'id_barang',
-        as: 'barang'
-      })
+      // define association here
     }
   }
   flow.init({
     id_barang: DataTypes.INTEGER,
-    nama_pemberi: DataTypes.STRING,
-    nama_penerima: DataTypes.STRING,
-    jumlah: DataTypes.INTEGER,
+    name_giver: DataTypes.STRING,
+    name_receiver: DataTypes.STRING,
+    total: DataTypes.INTEGER,
     status: DataTypes.STRING,
-    tanggal: DataTypes.DATE
+    date: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'flow',

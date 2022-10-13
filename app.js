@@ -1,55 +1,47 @@
 // Library yang di gunakan
-const { name } = require('ejs');
-const { urlencoded } = require('express');
-const { dirname } = require('path');
-const { body, validationResult, check } = require('express-validator');
 const express = require('express')
 const app = express();
-var expressLayouts = require('express-ejs-layouts');
-const port = 3000;
-const fs = require('fs');
-const path = require('path')
 const session = require('express-session');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 var morgan = require('morgan');
-const multer = require('multer');
-const dotenv = require('dotenv').config()
-const db = require("./models");
-const Role = db.role;
-
-db.sequelize.sync({force: true}).then(() => {
-    console.log('Drop and Resync Db');
-    initial();
-});
+const dotenv = require('dotenv');
+dotenv.config();
 
 // == Konfigurasi==
 // Configurasi dan gunakan library
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
-
-app.use(express.static('public'))
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
 app.use(express.json())
-app.set('view engine', 'ejs')
-// app.use(expressLayouts);
-// app.set('layout', 'layouts/layout');    
-// app.use(express.urlencoded());
-app.use(cookieParser('secret'));
+
+// const sessionStore = SequelizeStore(session.Store);
+
+// const store = new sessionStore({
+//     db: db
+// })
+
 //konfigurasi library session
 app.use(
     session({
+        secret: process.env.SESS_SECRET,
         resave: false,
-        saveUninitialized: false,
-        secret: 'secret',
-        name: 'secretName',
+        saveUninitialized: true,
+        // store: store,
         cookie: {
-            sameSite: true,
-            maxAge: 60000
+            secure: 'auto',
         },
         secret: 'secret',
     })
 );
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
+app.set('view engine', 'ejs')
+app.use(cookieParser('secret'));
 app.use(flash())
 app.use(morgan(function (tokens, req, res) {
     return [
@@ -59,19 +51,6 @@ app.use(morgan(function (tokens, req, res) {
         tokens['response-time'](req, res), 'ms'
     ].join(' ')
 }));
-
-// Membuat fungsi role
-function initial() {
-    Role.create({
-        id: 1,
-        name: "admin"
-    });
-
-    Role.create({
-        id: 2,
-        name: "super admin"
-    });
-}
 
 // Definisi lokasi route
 const routerUser = require('./routes/user')
@@ -106,6 +85,4 @@ app.use('/', (req, res) => {
     res.send(`page not found`)
 })
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+app.listen(process.env.APP_PORT, () => console.log(`Api Running in Port ${process.env.APP_PORT}`))

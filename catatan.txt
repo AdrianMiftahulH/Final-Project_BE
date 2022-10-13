@@ -3,7 +3,7 @@
 // untuk barng yang masuk atau keluar biila barang sudah ada hanya pakai modal
 // meski user membuat barang yang sama dengan barng yang ada di supplier, maka barng itu akan menambhakan bukan membuat barang baru
 // bila semua data baru sama dengan data lama maka hanya akan menambahkan barang, kalau hanya nama yang sama dengan nama lama maka invalid
-
+//bisa scan barang
 // Untuk menambahkan data user/register
 exports.add_user = async (req, res, next) => {
     try {
