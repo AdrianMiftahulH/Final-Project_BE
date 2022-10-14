@@ -8,7 +8,6 @@ const suppController = require('../controllers/supplier')
 // Menambahkan Supplier
 router.post(
     '/add-supp',
-    
     check('mobile','Mobile Invalid!').isMobilePhone(['id-ID']),
     suppController.add_supp);
 // Mengambil semua data supplier
@@ -16,7 +15,7 @@ router.get(`/list-supp`, suppController.list_supp)
 // Mengambil data supplier sesuai id
 router.get(`/list-supp/detail/:id`, suppController.detail_supp)
 // Mengupdate Supplier
-router.put(`/supplier/update/:id`, suppController.update_supp)
+router.patch(`/update/:id`, suppController.update_supp)
 // Menghapus data 
 router.delete(`/list-supp/delete/:id`, suppController.hapus_supp)
 

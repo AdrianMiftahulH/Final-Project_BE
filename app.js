@@ -41,7 +41,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
-app.use(cookieParser('secret'));
+app.use(cookieParser());
 app.use(flash())
 app.use(morgan(function (tokens, req, res) {
     return [
@@ -57,7 +57,7 @@ const routerUser = require('./routes/user')
 const routerKat = require('./routes/kategori')
 const routerSupp = require('./routes/supplier')
 const routerAuth = require('./routes/auth')
-const routerBar = require('./routes/barang')
+const routerPro = require('./routes/product')
 const routerFlow = require('./routes/flow')
 
 // === Untuk Halaman ===
@@ -74,7 +74,7 @@ app.use('/v1/kategori', routerKat)
 app.use('/v1/supplier', routerSupp)
 
 // == CRUD barang ==
-app.use('/v1/barang', routerBar)
+app.use('/v1/product', routerPro)
 
 // == Flow ==
 app.use('/v1/flow', routerFlow)

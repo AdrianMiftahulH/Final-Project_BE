@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      flow.belongsTo(models.product, {
+        foreignKey: 'id_barang',
+        as: 'type'
+      })
     }
   }
   flow.init({

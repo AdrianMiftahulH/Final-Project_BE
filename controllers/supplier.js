@@ -1,18 +1,18 @@
 const {supplier} = require('../models');
 
 // Menambahkan supplier
-exports.add_supp = async (req, res, next) => {
+exports.add_supp = async (req, res) => {
     try {
         // Mengambil data dari form
         const {
-            nama_supp,
-            alamat,
+            name_supp,
+            address,
             mobile
         } = req.body
         //membuat data baru di db menggunakan method create
         const supp = await supplier.create({
-            nama_supp,
-            alamat,
+            name_supp,
+            address,
             mobile
             });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status CREATED
@@ -32,7 +32,7 @@ exports.add_supp = async (req, res, next) => {
 };
 
 // List semua supp
-exports.list_supp = async (req, res, next) => {
+exports.list_supp = async (req, res) => {
     try {
         //mengambil semua data
         const supps = await supplier.findAll({});
@@ -60,11 +60,14 @@ exports.list_supp = async (req, res, next) => {
 }
 
 // Detail supp sesuai dengan id
-exports.detail_supp = async (req, res, next) => {
+exports.detail_supp = async (req, res) => {
     try {			
-        //mengangkap param ID
-        const id = 1;
-        const supps = await supplier.findByPk(id);		  
+        // mencari id di db
+        const supps = await supplier.findOne({
+            where:{
+                id: req.params.id
+            }
+        });		  	  
     
         if (supps) {
             res.json({
@@ -88,21 +91,25 @@ exports.detail_supp = async (req, res, next) => {
 };
 
 // Mengubah/ mengedit supp
-exports.update_supp = async (req, res, nex) =>{
-    try {
-        const id = 1
-        const nama = "PT.gtau";
-        const alamat = 'jl.gtau';
-        const mobile = 0899999;
-        
+exports.update_supp = async (req, res) =>{
+    // mencari id di db
+    const supps = await supplier.findOne({
+        where:{
+            id: req.params.id
+        }
+    });		
+    if(!supps) return res.status(404).json({msg: "Supps tidak di temukan"});
+    const {name_supp, address, mobile} = req.body;
+    
+    try {        
         // Mengupdate data yang di input sesuai id
         const supp = supplier.update({
-            nama,
-            alamat,
-            mobile
+            name_supp: name_supp,
+            address: address,
+            mobile: mobile
         }, {
             where: {
-                id: id
+                id: supps.id
             }
         })
     
@@ -115,22 +122,28 @@ exports.update_supp = async (req, res, nex) =>{
     } catch(err) {
         res.status(500).json({
             'status': '500 - INTERNAL SERVER ERROR',
-            'messages': 'Internal Server Error'
+            'messages': err.message
         })
     }
 }
 
 // Menghapus supp
-exports.hapus_supp = async (req, res, nex) =>{
+exports.hapus_supp = async (req, res) =>{
+    // mencari id di db
+    const supps = await supplier.findOne({
+        where:{
+            id: req.params.id
+        }
+    });		
+    if(!supps) return res.status(404).json({msg: "Supps tidak di temukan"});
     try {
-        const id = 1
-        const supps = supplier.destroy({
+        const supp = supplier.destroy({
             where: {
-                id: id
+                id: supps.id
             }
         })
     
-        if (supps) {
+        if (supp) {
             res.json({
                 'status': '201 - OK',
                 'messages': 'Supplier berhasil dihapus'

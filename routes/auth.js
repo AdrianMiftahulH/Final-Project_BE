@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router();
 
-// Memanggil Controller user
+// Memanggil Controller auth
 const authController = require('../controllers/auth')
 
-// Mengambil semua data
+// Mengecek sudah login atau belum
 router.get('/me', authController.Me)
-// Menmbahkan data user
+// Login
 router.post('/login', authController.Login)
-// Menghapus data user sesuai id
+// Logout
 router.delete('/logout', authController.logOut)
 
 module.exports = router
