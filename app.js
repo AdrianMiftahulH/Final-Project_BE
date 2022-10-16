@@ -10,6 +10,7 @@ const flash = require('connect-flash');
 var morgan = require('morgan');
 const multer = require('multer');
 const dotenv = require('dotenv');
+var fs = require('fs') 
 dotenv.config();
 
 // Tempat menyimpan image
@@ -63,14 +64,22 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs')
 app.use(cookieParser());
 app.use(flash())
+
+app.use(morgan('dev', {
+    skip: function (req, res) { return res.statusCode > 400 }
+}))
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
+
 app.use(morgan(function (tokens, req, res) {
     return [
+        tokens['date'](req, res),
         tokens.method(req, res),
         tokens.url(req, res),
         tokens.status(req, res),
         tokens['response-time'](req, res), 'ms'
     ].join(' ')
-}));
+},{stream: accessLogStream}));
+
 
 // Definisi lokasi route
 const routerUser = require('./routes/user')

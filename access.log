@@ -1,0 +1,25 @@
+GET /v1/product/list-product 200 1777.068 ms
+POST /v1/product/create-product 201 896.636 ms
+Sun, 16 Oct 2022 07:32:02 GMT GET /v1/product/list-product 200 2770.436 ms
+Sun, 16 Oct 2022 08:25:55 GMT GET /v1/product/list-product 200 3967.322 ms
+Sun, 16 Oct 2022 08:37:31 GMT POST /v1/supplier/add-supp 201 742.007 ms
+Sun, 16 Oct 2022 08:39:33 GMT POST /v1/supplier/add-supp 201 1315.340 ms
+Sun, 16 Oct 2022 08:40:02 GMT POST /v1/supplier/add-supp 201 613.739 ms
+Sun, 16 Oct 2022 08:40:29 GMT POST /v1/supplier/add-supp 201 830.462 ms
+Sun, 16 Oct 2022 08:41:22 GMT GET /v1/product/list-product 200 517.798 ms
+Sun, 16 Oct 2022 08:41:51 GMT GET /v1/product/list-product 200 650.178 ms
+Sun, 16 Oct 2022 08:45:15 GMT GET /v1/product/list-flow-by-product/6 200 1753.921 ms
+Sun, 16 Oct 2022 08:45:34 GMT GET /v1/product/list-flow-all-product 200 642.334 ms
+Sun, 16 Oct 2022 08:46:40 GMT GET /v1/product/list-product 200 658.871 ms
+Sun, 16 Oct 2022 08:47:29 GMT GET /v1/product/list-product 200 2799.276 ms
+Sun, 16 Oct 2022 08:47:44 GMT GET /v1/product/list-product 200 985.905 ms
+Sun, 16 Oct 2022 08:51:22 GMT POST /v1/product/create-product 201 2663.499 ms
+Sun, 16 Oct 2022 08:52:06 GMT POST /v1/product/create-product 201 1184.939 ms
+Sun, 16 Oct 2022 08:52:21 GMT POST /v1/product/create-product 201 1862.772 ms
+Sun, 16 Oct 2022 08:52:28 GMT POST /v1/product/create-product 409 11.455 ms
+Sun, 16 Oct 2022 08:52:37 GMT POST /v1/product/create-product 201 49.569 ms
+Sun, 16 Oct 2022 08:52:44 GMT GET /v1/product/list-product 200 62.464 ms
+Sun, 16 Oct 2022 08:53:08 GMT GET /v1/product/list-flow-by-product/2 200 659.345 ms
+Sun, 16 Oct 2022 08:53:19 GMT GET /v1/product/list-flow-by-product/1 200 1040.023 ms
+Sun, 16 Oct 2022 08:54:50 GMT POST /v1/product/flow/1 200 516.759 ms
+Sun, 16 Oct 2022 08:55:03 GMT GET /v1/product/list-flow-by-product/1 200 554.077 ms

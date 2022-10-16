@@ -3,6 +3,7 @@ const {product, flow} = require('../models');
 // === Barang ===
 // Membuat data Barang baru
 exports.create_product = async (req, res) => {
+
     // validasi photo/image
     if(!req.file){
         const err = new Error('no image')
@@ -11,7 +12,9 @@ exports.create_product = async (req, res) => {
         throw err;
     }
 
+    // mengambil data image dari file path
     const photo = req.file.path;
+
     // mengambil data dari req body
     const {
         id_supp,
@@ -308,7 +311,14 @@ exports.update_product = async (req, res) =>{
     });	
     // jika data tidak di temukan
     if(!Products) return res.status(404).json({msg: "Product Data Not Found"});
+    
+    // validasi photo/image
+    if(!req.file){
+        return res.status(409).json({msg: "Image Empaty"});
+    }
 
+    // mengambil data image dari file path
+    const photo = req.file.path;
     // data reqb body
     const {
         id_supp,
@@ -316,8 +326,7 @@ exports.update_product = async (req, res) =>{
         color_product,
         series_prooduct,
         fuel_type,
-        body_type,
-        photo
+        body_type
     } = req.body
 
     // Mencari nama produk di db bila sesuai dengan req body
