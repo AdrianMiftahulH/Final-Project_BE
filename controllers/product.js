@@ -3,6 +3,15 @@ const {product, flow} = require('../models');
 // === Barang ===
 // Membuat data Barang baru
 exports.create_product = async (req, res) => {
+    // validasi photo/image
+    if(!req.file){
+        const err = new Error('no image')
+        err.errorStatus = 400;
+        err.data = errors.array();
+        throw err;
+    }
+
+    const photo = req.file.path;
     // mengambil data dari req body
     const {
         id_supp,
@@ -12,7 +21,6 @@ exports.create_product = async (req, res) => {
         fuel_type,
         body_type,
         total,
-        photo,
         name_giver,
         name_receiver,
         date
