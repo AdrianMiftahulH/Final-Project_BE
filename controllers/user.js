@@ -86,7 +86,7 @@ exports.add_user = async (req, res) => {
     if (emailcheck) {
         return res.status(409).json({msg :"Authentication Failed"});
     }
-    if(password !== confPassword) return res.status(400).json({msg: "Password dan Confirm password tidak valid"})
+    if(password !== confPassword) return res.status(400).json({msg: "Password dan Confirm password invalid"})
     const hashPassword = await argon2.hash(password)
     try {
         //membuat data baru di db menggunakan method create
@@ -94,7 +94,7 @@ exports.add_user = async (req, res) => {
             username: username,
             email: email,
             password: hashPassword,
-            role: role
+            role: role,
         });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
         if (users) {

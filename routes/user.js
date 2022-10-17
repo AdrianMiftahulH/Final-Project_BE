@@ -5,14 +5,14 @@ const VerifyUser = require('../Middleware/AuthUser')
 const userController = require('../controllers/user')
 
 // Mengambil semua data
-router.get('/list-user', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userController.list_user)
+router.get('/list-user', userController.list_user)
 // Mengambil data sesuai id
-router.get('/detail/:id', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userController.detail_user)
+router.get('/detail/:id', userController.detail_user)
 // Menmbahkan data user
-router.post('/create', VerifyUser.superAdminOnly, userController.add_user)
+router.post('/create', userController.add_user)
 // Mengupdate data user
-router.patch('/update/:id', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userController.update_user)
+router.patch('/update/:id', userController.update_user)
 // Menghapus data user sesuai id
-router.delete('/delete/:id', VerifyUser.VerifyUser, VerifyUser.superAdminOnly, userController.delete_user)
+router.delete('/delete/:id', userController.delete_user)
 
 module.exports = router

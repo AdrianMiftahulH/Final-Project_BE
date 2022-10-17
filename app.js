@@ -44,7 +44,7 @@ app.use(cors({
 
 app.use(express.json())
 
-//konfigurasi library session
+//konfigurasi Middleware
 app.use(
     session({
         secret: process.env.SESS_SECRET,
