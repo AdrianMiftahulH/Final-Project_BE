@@ -19,16 +19,22 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_supp',
         as: 'supplier'
       })
+      product.belongsTo(models.category,{
+        foreignKey: 'id_cat',
+        as: 'category'
+      })
+      product.hasMany(models.detailFlow, {
+        foreignKey: 'id_product',
+        as: 'product'
+    })
     }
   }
   product.init({
     id_supp: DataTypes.INTEGER,
+    id_cat: DataTypes.INTEGER,
     name_product: DataTypes.STRING,
-    color_product: DataTypes.STRING,
-    series_product: DataTypes.STRING,
-    fuel_type: DataTypes.STRING,
-    body_type: DataTypes.STRING,
     total: DataTypes.INTEGER,
+    satuan: DataTypes.STRING,
     photo: DataTypes.STRING
   }, {
     sequelize,

@@ -8,7 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_barang: {
+      id_supp: {
+        type: Sequelize.INTEGER
+      },
+      id_dist: {
         type: Sequelize.INTEGER
       },
       name_giver: {
@@ -17,13 +20,13 @@ module.exports = {
       name_receiver: {
         type: Sequelize.STRING
       },
-      total: {
-        type: Sequelize.INTEGER
-      },
       status: {
         type: Sequelize.STRING
       },
-      date: {
+      date_add: {
+        type: Sequelize.DATE
+      },
+      date_drop:{
         type: Sequelize.DATE
       },
       createdAt: {

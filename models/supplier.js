@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      supplier.hasMany(models.product, {
+      supplier.hasMany(models.flow, {
           foreignKey: 'id_supp',
-          as: 'product'
+          as: 'flow'
       })
     }
   }
   supplier.init({
+    logo_supp: DataTypes.STRING,
     name_supp: DataTypes.STRING,
     address: DataTypes.STRING,
     mobile: DataTypes.INTEGER

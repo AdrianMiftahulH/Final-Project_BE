@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router();
-const VerifyUser = require('../Middleware/AuthUser')
+
 // Memanggil Controller user
 const userController = require('../controllers/user')
+
+// memanggil middleware
+const AuthUser = require('../Middleware/AuthUser')
 
 // Mengambil semua data
 router.get('/list-user', userController.list_user)

@@ -31,62 +31,47 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 }
-
-// == Konfigurasi==
-// Configurasi dan gunakan library
+// app.use(express.bodyParser({limit: '50mb'}));
 app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('photo'))
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: 'http://localhost:3000',
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: 'Content-Type, Authorization'
 }));
 
-app.use(express.json())
-
-//konfigurasi Middleware
-app.use(
-    session({
-        secret: process.env.SESS_SECRET,
-        resave: false,
-        saveUninitialized: true,
-        // store: store,
-        cookie: {
-            secure: 'auto',
-        },
-        secret: 'secret',
-    })
-);
-
-
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public'))
-app.set('view engine', 'ejs')
+app.use(express.json({limit: '50mb'}))
+app.use(express.urlencoded({ limit: '50mb',extended: true }))
 app.use(cookieParser());
 app.use(flash())
 
-app.use(morgan('dev', {
-    skip: function (req, res) { return res.statusCode > 400 }
-}))
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
 
-app.use(morgan(function (tokens, req, res) {
-    return [
-        tokens['date'](req, res),
-        tokens.method(req, res),
-        tokens.url(req, res),
-        tokens.status(req, res),
-        tokens['response-time'](req, res), 'ms'
-    ].join(' ')
-},{stream: accessLogStream}));
+app.use(morgan((tokens, req, res) => {
+        return [
+            tokens['date'](req, res),
+            tokens.method(req, res),
+            tokens.url(req, res),
+            tokens.status(req, res),
+            tokens['response-time'](req, res), 'ms'
+        ].join(' ')
+    },
+    {
+        stream: accessLogStream
+    }
+));
 
 
 // Definisi lokasi route
 const routerUser = require('./routes/user')
-const routerKat = require('./routes/kategori')
+const routerCate = require('./routes/category')
 const routerSupp = require('./routes/supplier')
+const routerDist = require('./routes/distributor')
 const routerAuth = require('./routes/auth')
 const routerPro = require('./routes/product')
+const routerTrans = require('./routes/transaction')
 
 // === Untuk Halaman ===
 // == Authentication ==
@@ -96,13 +81,19 @@ app.use('/v1/auth/', routerAuth)
 app.use('/v1/user', routerUser)
 
 // == CRUD kategori ==
-app.use('/v1/kategori', routerKat)
+app.use('/v1/category', routerCate)
 
 // == CRUD supplier ==
 app.use('/v1/supplier', routerSupp)
 
+// == CRUD distributor
+app.use('/v1/distributor', routerDist)
+
 // == CRUD barang ==
 app.use('/v1/product', routerPro)
+
+// == CRUD Transaction ==
+app.use('/v1/transaction', routerTrans)
 
 // == Kondisi halaman tidak di temukan ==
 app.use('/', (req, res) => {

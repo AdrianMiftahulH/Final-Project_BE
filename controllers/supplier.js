@@ -3,6 +3,12 @@ const {supplier} = require('../models');
 // Menambahkan supplier
 exports.add_supp = async (req, res) => {
     try {
+        // validasi photo/image
+        if(!req.file){
+            return res.status(409).json({msgErr: "No image"});
+        }
+        // mengambil data image dari file path
+        const photo = req.file.path;
         // Mengambil data dari form
         const {
             name_supp,
@@ -11,10 +17,11 @@ exports.add_supp = async (req, res) => {
         } = req.body
         //membuat data baru di db menggunakan method create
         const supp = await supplier.create({
-            name_supp,
-            address,
-            mobile
-            });
+            name_supp: name_supp,
+            address: address,
+            mobile: mobile,
+            logo_dist: photo
+        });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status CREATED
         if (supp) {
             res.status(201).json({
@@ -26,7 +33,7 @@ exports.add_supp = async (req, res) => {
     } catch(err) {
         res.status(400).json({
             'status': '400 - ERROR',
-            'messages': err.message
+            msgErr: err.message
         });
     }
 };
@@ -47,14 +54,14 @@ exports.list_supp = async (req, res) => {
         } else {
             res.json({
                 'status': 'EMPTY',
-                'messages': 'Data is empty',
+                msgErr: 'Data is empty',
                 'data': {} 
             });
         }
     } catch (err) {
             res.status(500).json({
                 'status': '500 - INTERNAL SERVER ERROR',
-                'messages': 'Internal Server Error'
+                msgErr: 'Internal Server Error'
         })
     }
 }
@@ -78,14 +85,14 @@ exports.detail_supp = async (req, res) => {
         } else {
             res.status(404).json({
                 'status': '404 - NOT FOUND',
-                'messages': 'Data not found',
+                msgErr: 'Data not found',
                 'data': null 
             });
         }
     } catch (err) {		
         res.status(500).json({
             'status': '500 - INTERNAL SERVER ERROR',
-            'messages': 'Internal Server Error'
+            msgErr: 'Internal Server Error'
         })
     }
 };
@@ -98,7 +105,7 @@ exports.update_supp = async (req, res) =>{
             id: req.params.id
         }
     });		
-    if(!supps) return res.status(404).json({msg: "Supps tidak di temukan"});
+    if(!supps) return res.status(404).json({msgErr: "Supps tidak di temukan"});
     const {name_supp, address, mobile} = req.body;
     
     try {        
@@ -122,7 +129,7 @@ exports.update_supp = async (req, res) =>{
     } catch(err) {
         res.status(500).json({
             'status': '500 - INTERNAL SERVER ERROR',
-            'messages': err.message
+            msgErr: err.message
         })
     }
 }
@@ -135,7 +142,7 @@ exports.hapus_supp = async (req, res) =>{
             id: req.params.id
         }
     });		
-    if(!supps) return res.status(404).json({msg: "Supps tidak di temukan"});
+    if(!supps) return res.status(404).json({msgErr: "Supps tidak di temukan"});
     try {
         const supp = supplier.destroy({
             where: {
@@ -152,7 +159,7 @@ exports.hapus_supp = async (req, res) =>{
     } catch(err) {
         res.status(500).json({
             'status': '500 - INTERNAL SERVER ERROR',
-            'messages': 'Internal Server Error'
+            msgErr: 'Internal Server Error'
         })
     }
 }

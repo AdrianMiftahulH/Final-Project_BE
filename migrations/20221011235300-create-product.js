@@ -11,23 +11,17 @@ module.exports = {
       id_supp: {
         type: Sequelize.INTEGER
       },
+      id_cat: {
+        type: Sequelize.INTEGER
+      },
       name_product: {
-        type: Sequelize.STRING
-      },
-      color_product: {
-        type: Sequelize.STRING
-      },
-      series_product: {
-        type: Sequelize.STRING
-      },
-      fuel_type: {
-        type: Sequelize.STRING
-      },
-      body_type: {
         type: Sequelize.STRING
       },
       total: {
         type: Sequelize.INTEGER
+      },
+      satuan: {
+        type: Sequelize.STRING
       },
       photo: {
         type: Sequelize.STRING
