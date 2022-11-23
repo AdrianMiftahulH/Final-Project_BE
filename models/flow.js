@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_supp',
         as: 'supplier'
       })
-      flow.belongsTo(models.distributor, {
+      flow.belongsTo(models.reseller, {
         foreignKey: 'id_dist',
-        as: 'distributor'
+        as: 'reseller'
       })
       flow.hasMany(models.detailFlow, {
         foreignKey: 'id_flow',

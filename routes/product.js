@@ -13,6 +13,8 @@ router.post('/create-product', proController.create_product);
 router.get('/list-product', proController.list_product)
 // Router detail
 router.get('/detail/:id', proController.detail_product)
+// Router detail by Supplier
+router.get('/productBySupp/:id', proController.detail_product_by_supplier)
 // Router edit 
 router.patch('/update/:id', proController.update_product)
 // Router hapus data 

@@ -42,10 +42,13 @@ app.use(cors({
     allowedHeaders: 'Content-Type, Authorization'
 }));
 
-app.use(express.json({limit: '50mb'}))
-app.use(express.urlencoded({ limit: '50mb',extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb",extended: true, parameterLimit:50000}));
 app.use(cookieParser());
 app.use(flash())
+
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
 
@@ -68,7 +71,7 @@ app.use(morgan((tokens, req, res) => {
 const routerUser = require('./routes/user')
 const routerCate = require('./routes/category')
 const routerSupp = require('./routes/supplier')
-const routerDist = require('./routes/distributor')
+const routerDist = require('./routes/reseller')
 const routerAuth = require('./routes/auth')
 const routerPro = require('./routes/product')
 const routerTrans = require('./routes/transaction')
@@ -86,8 +89,8 @@ app.use('/v1/category', routerCate)
 // == CRUD supplier ==
 app.use('/v1/supplier', routerSupp)
 
-// == CRUD distributor
-app.use('/v1/distributor', routerDist)
+// == CRUD reseller
+app.use('/v1/reseller', routerDist)
 
 // == CRUD barang ==
 app.use('/v1/product', routerPro)

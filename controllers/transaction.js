@@ -1,10 +1,36 @@
 const {product, User, flow, detailFlow} = require('../models');
 
+// List ALl Transaction Success
+exports.List_Transaction_Success = async (req, res) => {
+    try {
+        //mengambil semua data
+        const getAllTrns = await flow.findAll(
+        )
+        
+        // Pengkondisian data atau tidak
+        if (getAllTrns.length !== 0) {
+            res.json({
+                'status': '200 - OK',
+                'messages': 'List All Product Data',
+                'data': getAllTrns
+            });
+            } else {
+                res.json({
+                    'status': 'EMPTY',
+                    msgErr: 'Data is empty'
+                });
+            }
+    } catch (err) {
+            res.status(500).json({
+                'status': 'ERROR',
+                msgErr: 'Internal Server Error'
+            })
+    }
+}
+
 // Memabuat transaksi masu sesuai id supplier
 exports.flow_add_product = async ( req, res ) => {
     const {
-        id_supp,
-        name_giver,
         date_add
     } = req.body;
 
@@ -16,41 +42,58 @@ exports.flow_add_product = async ( req, res ) => {
         }
     })
     if(!user) return res.status(401);
-    try {  
-        const trans = await flow.create({
-            id_supp: id_supp,
-            name_giver: name_giver,
-            name_receiver: user[0].username,
-            status: "add",
-            date_add: date_add
-        })
-        if(trans){
-            const upFlow = await detailFlow.update({
-                id_flow: trans.id,
-                status: "TransSuccess"
-            }, {
-                where: {
-                    status: "preTrans"
-                }
-            })
-            if(upFlow){
-                res.status(201).json({
-                    'status': 'OK',
-                    'messages': 'User Data Has Been Successfully Updated',
-                    'data': upFlow,
-                    'trans': trans
-                });
-            }
-        }
-    } catch (err) {
-        res.status(500).json({
-            'status': 'ERROR',
-            msgErr: res.err
-        })
-    }
+
+    // try {  
+    //     const trans = await flow.create({
+    //         name_receiver: user[0].username,
+    //         status: "add",
+    //         date_add: date_add
+    //     })
+    //     if(trans){
+    //         const findDetail = await detailFlow.findAll({
+    //             where: {
+    //                 status: "preTransAdd"
+    //             }
+    //         })
+    //         const findProduct = await product.findAll({
+    //             where: {
+    //                 id: findDetail.id_product
+    //             }
+    //         })
+    //         const upProd = await product.update({
+    //             total: findDetail.total + findProduct.total
+    //         }, {
+    //             where: {
+    //                 id: findDetail.id_product
+    //             }
+    //         })
+    //         // const upFlow = await detailFlow.update({
+    //         //     id_flow: trans.id,
+    //         //     status: "TransSuccess"
+    //         // }, {
+    //         //     where: {
+    //         //         status: "preTransAdd"
+    //         //     }
+    //         // })
+    //         if(upProd){
+                
+    //             res.status(201).json({
+    //                 'status': 'OK',
+    //                 'messages': 'User Data Has Been Successfully Updated',
+    //                 'data': findProduct,
+    //                 'trans': upProd
+    //             });
+    //         }
+    //     }
+    // } catch (err) {
+    //     res.status(500).json({
+    //         'status': 'ERROR',
+    //         msgErr: res.err
+    //     })
+    // }
 }
 
-// Memabuat transaksi keluar sesuai id distributor
+// Memabuat transaksi keluar sesuai id reseller
 exports.flow_drop_product = async ( req, res ) => {
     const {
         id_dist,
@@ -119,7 +162,7 @@ exports.flow_drop_product = async ( req, res ) => {
 // === Detail Transaksi === 
 
 // Menambahkan barang di transaksi
-exports.create_detail_flow = async ( req, res ) => {
+exports.create_detail_add_flow = async ( req, res ) => {
     const {
         id_product,
         total
@@ -135,7 +178,72 @@ exports.create_detail_flow = async ( req, res ) => {
         return res.json({
             'status': 'EMPTY',
             msgErr: 'Data is empty',
-            'data': {} 
+             
+        });
+    }
+    // Cek semua detail flow
+    const cekdetailFlow = await detailFlow.findOne({
+        where: {
+            id_product: totalProductCheck.id,
+        }
+    })
+    try {
+        if(!cekdetailFlow){
+            const detailTrans = await detailFlow.create({
+                id_product: totalProductCheck.id,
+                status: "preTransAdd",
+                total: total
+            })
+            if(detailTrans){
+                res.status(201).json({
+                        'status': '201 - CREATED',
+                        'messages': 'Product success selected',
+                        'data': detailTrans,
+                }); 
+            }
+        }
+        else if(cekdetailFlow.id_product === id_product){
+            const detailTrans = await detailFlow.update({
+                total: total
+            }, {
+                where: {
+                    id: cekdetailFlow.id
+                }
+            })
+            if(detailTrans){
+                res.status(201).json({
+                    'status': '201 - CREATED',
+                    'messages': 'detail di update',
+                    'data': detailTrans
+                }); 
+            }
+        }
+    } catch (err) {
+        res.status(500).json({
+            'status': 'ERROR',
+            msgErr: res.err
+        })
+    }
+}
+
+// Menambahkan barang di transaksi
+exports.create_detail_drop_flow = async ( req, res ) => {
+    const {
+        id_product,
+        total
+    } = req.body;
+    // Mencari nama produk di db bila sesuai dengan req body
+    const totalProductCheck = await product.findOne({
+        where:{
+            id: id_product,
+        }
+    })
+    // jika nama produk req sama dengan nama produk db
+    if(!totalProductCheck){
+        return res.json({
+            'status': 'EMPTY',
+            msgErr: 'Data is empty',
+             
         });
     }
     // Cek semua detail flow
@@ -161,7 +269,7 @@ exports.create_detail_flow = async ( req, res ) => {
         }
         else if(cekdetailFlow.id_product === id_product){
             const detailTrans = await detailFlow.update({
-                total: total + cekdetailFlow.total
+                total: total
             }, {
                 where: {
                     id: cekdetailFlow.id
@@ -182,15 +290,14 @@ exports.create_detail_flow = async ( req, res ) => {
         })
     }
 }
-
 // List Detail Transaction Pre transaction
-exports.List_DetailPreTransaction = async (req, res) => {
+exports.List_Add_DetailPreTransaction = async (req, res) => {
     try {
         //mengambil semua data
         const detailTrans = await detailFlow.findAll(
             {
             where: {
-                status: "preTrans"
+                status: "preTransAdd"
             }}
         )
         
@@ -205,7 +312,7 @@ exports.List_DetailPreTransaction = async (req, res) => {
                 res.json({
                     'status': 'EMPTY',
                     msgErr: 'Data is empty',
-                    'data': {} 
+                     
                 });
             }
     } catch (err) {

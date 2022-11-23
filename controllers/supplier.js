@@ -10,17 +10,29 @@ exports.add_supp = async (req, res) => {
         // mengambil data image dari file path
         const photo = req.file.path;
         // Mengambil data dari form
+
         const {
             name_supp,
             address,
             mobile
         } = req.body
+
+        // mencari nama supplier
+        const supps = await supplier.findOne({
+            where:{
+                name_supp: name_supp
+            }
+        });		  	  
+    
+        if (supps) {
+            return res.status(409).json({msgErr: "Name Supplier Already Taken"});
+        } 
         //membuat data baru di db menggunakan method create
         const supp = await supplier.create({
             name_supp: name_supp,
             address: address,
             mobile: mobile,
-            logo_dist: photo
+            logo_supp: photo
         });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status CREATED
         if (supp) {
@@ -42,7 +54,9 @@ exports.add_supp = async (req, res) => {
 exports.list_supp = async (req, res) => {
     try {
         //mengambil semua data
-        const supps = await supplier.findAll({});
+        const supps = await supplier.findAll({
+            
+        });
         
         // Pengkondisian data ada atau tidak di database
         if (supps.length !== 0) {
@@ -55,7 +69,7 @@ exports.list_supp = async (req, res) => {
             res.json({
                 'status': 'EMPTY',
                 msgErr: 'Data is empty',
-                'data': {} 
+                 
             });
         }
     } catch (err) {
@@ -104,13 +118,57 @@ exports.update_supp = async (req, res) =>{
         where:{
             id: req.params.id
         }
-    });		
+    });	 
     if(!supps) return res.status(404).json({msgErr: "Supps tidak di temukan"});
-    const {name_supp, address, mobile} = req.body;
+	
+    // mencari nama supplier
+    const ListSupps = await supplier.findOne({
+        where:{
+            name_supp: req.body.name_supp
+        }
+    });		  	  
+
+    if (ListSupps) {
+        return res.status(409).json({msgErr: "Name Supplier Already Taken"});
+    } 
+
+    let photo;
+    let name_supp;
+    let address;
+    let mobile;
+
+     // validasi photo/image
+    if(!req.file){
+        photo = supps.logo_supp
+    }else{
+    // mengambil data image dari file path
+        photo = req.file.path;
+    }
     
+    // validasi name_supp
+    if(req.body.name_supp === "" || req.body.name_supp === null) {
+        name_supp = supps.name_supp;
+    }else{
+        name_supp = req.body.name_supp
+    }
+
+    // validasi address
+    if(req.body.address === "" || req.body.address === null) {
+        address = supps.address;
+    }else{
+        address = req.body.address
+    }
+
+    // validasi mobile
+    if(req.body.mobile === "" || req.body.mobile === null) {
+        mobile = supps.mobile;
+    }else{
+        mobile = req.body.mobile
+    }
+
     try {        
         // Mengupdate data yang di input sesuai id
-        const supp = supplier.update({
+        const supp = await supplier.update({
             name_supp: name_supp,
             address: address,
             mobile: mobile

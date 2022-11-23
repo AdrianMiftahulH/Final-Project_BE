@@ -1,32 +1,25 @@
-const { distributor } = require('../models');
+const { reseller } = require('../models');
 
-// Menambahkan distributor
-exports.add_distributor = async (req, res) => {
+// Menambahkan reseller
+exports.add_reseller = async (req, res) => {
     try {
-        // validasi photo/image
-        if(!req.file){
-            return res.status(409).json({msgErr: "No image"});
-        }
-        // mengambil data image dari file path
-        const photo = req.file.path;
         // Mengambil data dari form
         const {
-            name_dist,
+            name_resel,
             address,
             mobile
         } = req.body
         //membuat data baru di db menggunakan method create
-        const dist = await distributor.create({
-            name_dist: name_dist,
+        const dist = await reseller.create({
+            name_resel: name_resel,
             address: address,
-            mobile: mobile,
-            logo_dist: photo
+            mobile: mobile
             });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status CREATED
         if (dist) {
             res.status(201).json({
             'status': '201 - CREATED',
-            msg : 'distributor berhasil ditambahkan',
+            msg : 'reseller berhasil ditambahkan',
             'data': dist
             });
         }
@@ -38,24 +31,24 @@ exports.add_distributor = async (req, res) => {
     }
 };
 
-// List semua distributor
-exports.list_distributor = async (req, res) => {
+// List semua reseller
+exports.list_reseller = async (req, res) => {
     try {
         //mengambil semua data
-        const dists = await distributor.findAll({});
+        const dists = await reseller.findAll({});
         
         // Pengkondisian data ada atau tidak di database
         if (dists.length !== 0) {
             res.json({
                 'status': '200 - OK',
-                msg: 'Data list distributor',
+                msg: 'Data list reseller',
                 'data': dists
             });
         } else {
             res.json({
                 'status': 'EMPTY',
                 msgErr: 'Data is empty',
-                'data': {} 
+                 
             });
         }
     } catch (err) {
@@ -66,11 +59,11 @@ exports.list_distributor = async (req, res) => {
     }
 }
 
-// Detail distributor sesuai dengan id
-exports.detail_distributor = async (req, res) => {
+// Detail reseller sesuai dengan id
+exports.detail_reseller = async (req, res) => {
     try {			
         // mencari id di db
-        const dist = await distributor.findOne({
+        const dist = await reseller.findOne({
             where:{
                 id: req.params.id
             }
@@ -79,7 +72,7 @@ exports.detail_distributor = async (req, res) => {
         if (dist) {
             res.json({
                 'status': '200 - OK',
-                msg : 'Detail distributor',
+                msg : 'Detail reseller',
                 'data': dist
             });
         } else {
@@ -97,21 +90,21 @@ exports.detail_distributor = async (req, res) => {
     }
 };
 
-// Mengubah/ mengedit distributor
-exports.update_distributor = async (req, res) =>{
+// Mengubah/ mengedit reseller
+exports.update_reseller = async (req, res) =>{
     // mencari id di db
-    const dists = await distributor.findOne({
+    const dists = await reseller.findOne({
         where:{
             id: req.params.id
         }
     });		
-    if(!dists) return res.status(404).json({msgErr: "distributor tidak di temukan"});
-    const {name_dist, address, mobile} = req.body;
+    if(!dists) return res.status(404).json({msgErr: "reseller tidak di temukan"});
+    const {name_resel, address, mobile} = req.body;
     
     try {        
         // Mengupdate data yang di input sesuai id
-        const dist = distributor.update({
-            name_dist: name_dist,
+        const dist = reseller.update({
+            name_resel: name_resel,
             address: address,
             mobile: mobile
         }, {
@@ -123,7 +116,7 @@ exports.update_distributor = async (req, res) =>{
         if (dist) {
             res.json({
             'status': 'OK',
-            msg: 'distributor berhasil diubah'
+            msg: 'reseller berhasil diubah'
             })
         }
     } catch(err) {
@@ -134,17 +127,17 @@ exports.update_distributor = async (req, res) =>{
     }
 }
 
-// Menghapus distributor
-exports.hapus_distributor = async (req, res) =>{
+// Menghapus reseller
+exports.hapus_reseller = async (req, res) =>{
     // mencari id di db
-    const dists = await distributor.findOne({
+    const dists = await reseller.findOne({
         where:{
             id: req.params.id
         }
     });		
-    if(!dists) return res.status(404).json({msgErr: "distributor tidak di temukan"});
+    if(!dists) return res.status(404).json({msgErr: "reseller tidak di temukan"});
     try {
-        const dist = distributor.destroy({
+        const dist = reseller.destroy({
             where: {
                 id: dists.id
             }
@@ -153,7 +146,7 @@ exports.hapus_distributor = async (req, res) =>{
         if (dist) {
             res.json({
                 'status': '201 - OK',
-                msg: 'distributor berhasil dihapus'
+                msg: 'reseller berhasil dihapus'
             })
         }
     } catch(err) {

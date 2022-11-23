@@ -1,4 +1,4 @@
-const {product, User, flow, detailFlow} = require('../models');
+const {product, supplier, category} = require('../models');
 
 // === Barang ===
 // Membuat data Barang baru
@@ -12,8 +12,6 @@ exports.create_product = async (req, res) => {
 
     // mengambil data dari req body
     const {
-        id_supp,
-        id_cat,
         name_product,
         satuan
     } = req.body
@@ -25,6 +23,20 @@ exports.create_product = async (req, res) => {
         }
     })
 
+    // Mencari nama produk di db bila sesuai dengan req body
+    const findSupp = await supplier.findOne({
+        where:{
+            name_supp: req.body.id_supp,
+        }
+    })
+
+    // Mencari nama produk di db bila sesuai dengan req body
+    const findCate = await category.findOne({
+        where:{
+            name_cat: req.body.id_cat,
+        }
+    })
+
     // jika nama produk req sama dengan nama produk db
     if(nameProductCheck){
         return res.status(409).json({msgErr: "Product name already exists"});
@@ -32,9 +44,10 @@ exports.create_product = async (req, res) => {
     try {
         //membuat data baru di db menggunakan method create
         const products = await product.create({
-            id_supp: id_supp,
-            id_cat: id_cat,
+            id_supp: findSupp.id,
+            id_cat: findCate.id,
             name_product: name_product,
+            satuan: satuan,
             total: 0,
             photo: photo
         });
@@ -79,7 +92,7 @@ exports.list_product = async (req, res) => {
             res.json({
                 'status': 'EMPTY',
                 msgErr: 'Data is empty',
-                'data': {} 
+                 
             });
         }
     } catch (err) {
@@ -128,6 +141,43 @@ exports.detail_product = async (req, res) => {
     }
 };
 
+// Detail barang sesuai dengan id Supplier
+exports.detail_product_by_supplier = async (req, res) => {
+    try {	
+        // mencari id di db
+        const products = await product.findAll({
+            include: [
+                'supplier',
+                'category'
+            ],
+            where:{
+                id_supp: req.params.id
+            }
+        });		  
+
+        // jika data tidak di temukan
+        if(!products) return res.status(404).json({msgErr: "Product Data Not Found"});
+
+        if (products) {
+            res.json({
+                'status': '200 - OK',
+                'messages': 'Detail Product Data',
+                'data': products
+            });
+        } else {
+            res.status(404).json({
+                'status': '404 - NOT FOUND',
+                msgErr: 'Data not found',
+                'data': null 
+            });
+        }
+    } catch (err) {		
+        res.status(500).json({
+            'status': '500 - INTERNAL SERVER ERROR',
+            msgErr: 'Internal Server Error'
+        })
+    }
+};
 // Mengubah/ mengedit barang
 exports.update_product = async (req, res) =>{
      // mencari id di db

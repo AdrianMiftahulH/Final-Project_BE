@@ -13,10 +13,10 @@ router.post('/add-supp', suppController.add_supp);
 // Mengambil semua data supplier
 router.get(`/list-supp`, suppController.list_supp)
 // Mengambil data supplier sesuai id
-router.get(`/list-supp/detail/:id`, suppController.detail_supp)
+router.get(`/detail/:id`, suppController.detail_supp)
 // Mengupdate Supplier
 router.patch(`/update/:id`, suppController.update_supp)
 // Menghapus data 
-router.delete(`/list-supp/delete/:id`, suppController.hapus_supp)
+router.delete(`/delete/:id`, suppController.hapus_supp)
 
 module.exports = router

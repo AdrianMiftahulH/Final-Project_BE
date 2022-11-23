@@ -14,9 +14,9 @@ exports.add_category = async (req, res) => {
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status CREATED
         if (cate) {
             res.status(201).json({
-            'status': '201 - CREATED',
-            msg: 'Category berhasil ditambahkan',
-            'data': cate
+                'status': '201 - CREATED',
+                msg: 'Category berhasil ditambahkan',
+                'data': cate
             });
         }
     } catch(err) {
@@ -44,7 +44,6 @@ exports.list_category = async (req, res) => {
             res.json({
                 'status': 'EMPTY',
                 msgErr: 'Data is empty',
-                'data': {} 
             });
         }
     } catch (err) {

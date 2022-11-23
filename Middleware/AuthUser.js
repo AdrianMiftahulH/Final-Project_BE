@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 
 exports.VerifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = authHeader && authHeader.split(' ');
 
     if (token == null) return res.sendStatus(401);
 
@@ -18,7 +18,7 @@ exports.VerifyToken = (req, res, next) => {
 exports.adminOnly = async (req, res, next) => {
     const user = await User.findOne({
         where: {
-            role: req.cookies.role
+            refresh_token: req.cookies.refresh_token
         }
     });
     if(!user) return res.status(404).json({msg: "User tidak di temukan"});

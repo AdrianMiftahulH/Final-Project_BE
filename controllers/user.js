@@ -22,7 +22,7 @@ exports.list_user = async (req, res) => {
             res.json({
                 'status': 'EMPTY',
                 msgErr: 'User Data Not Found',
-                'data': {}
+                
             })
         }
     } catch (err) {
@@ -109,7 +109,7 @@ exports.add_user = async (req, res) => {
             username: username,
             email: email,
             password: hashPassword,
-            role: role,
+            role: 'admin',
             photoProfile: photo
         });
         //jika data berhasil dibuat, kembalikan response dengan kode 201 dan status OK
@@ -136,8 +136,54 @@ exports.update_user = async (req, res, nex) =>{
             id: req.params.id
         }
     });		
-    if(!user) return res.status(404).json({msgErr: "User Data Not Found"});
-    const {username, email, password, confPassword, role} = req.body;
+    if(!user) return res.status(404).json({msgErr: "User Data Not Found"});    
+
+    // mencari username di db sesuai dengan req username
+    const usernameCheck = await User.findOne({
+        where: {
+            username: req.body.username,
+        },
+    });
+    // jika username req sama dengan username di db
+    if (usernameCheck) {
+        return res.status(402).json({ msgErr : "Username Already Taken"});
+    }
+
+    let photo;
+    let username;
+    let email;
+    let role;
+
+    // validasi photo/image
+    if(!req.file){
+        photo = user.photoProfile
+    }else{
+    // mengambil data image dari file path
+        photo = req.file.path;
+    }
+
+    // validasi username
+    if(req.body.username === "" || req.body.username === null) {
+        username = user.username;
+    }else{
+        username = req.body.username
+    }
+
+    // validasi email
+    if(req.body.email === "" || req.body.email === null) {
+        email = user.email;
+    }else{
+        email = req.body.email
+    }
+
+    // validasi role
+    if(req.body.role === "" || req.body.role === null) {
+        role = user.role;
+    }else{
+        role = req.body.role
+    }
+
+    const {password, confPassword} = req.body;
     let hashPassword;
     if(password === "" || password === null){
         hashPassword = user.password
@@ -151,8 +197,9 @@ exports.update_user = async (req, res, nex) =>{
         const users = await User.update({
             username: username,
             email: email,
+            role: role,
             password: hashPassword,
-            role: role
+            photoProfile: photo
         },{
             where: {
                 id: user.id
